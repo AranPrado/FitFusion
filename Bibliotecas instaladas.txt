@@ -1,0 +1,11 @@
+dotnet add package Pomelo.EntityFrameworkCore.MySql
+//MYSQL
+
+dotnet add package Microsoft.EntityFrameworkCore.Design
+//ENTITYFRAMEWORK.DESIGN
+
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+//ENTITYFRAMEWORK.TOOLS
+
+dotnet add package Microsoft.EntityFrameworkCore
+//ENTITYFRAMEWORK
