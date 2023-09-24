@@ -1,4 +1,6 @@
+using FitFusion.Controllers;
 using FitFusion.Database;
+using FitFusion.Repositores.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,11 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Conexão com o banco de dados
 
-    builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DataBase"),
-        new MySqlServerVersion(new Version(8, 0, 26)),
-        b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
-
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseMySql(builder.Configuration.GetConnectionString("DataBase"),
+    new MySqlServerVersion(new Version(8, 0, 26)),
+    b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
 //fim
 
@@ -19,6 +20,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IExerciciosRepositore, ExerciciosController>();
 
 var app = builder.Build();
 
@@ -26,7 +28,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
+    });
 }
 
 app.UseHttpsRedirection();
