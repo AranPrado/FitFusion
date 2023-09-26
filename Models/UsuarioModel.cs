@@ -11,7 +11,7 @@ namespace FitFusion.Models
         [Key]
         public int UserID { get; set; }
 
-        [Required(ErrorMessage="O nome do usuário é obrigatório")]
+        [Required(ErrorMessage = "O nome do usuário é obrigatório")]
         [MaxLength(150)]
         public string Nome { get; set; }
 
@@ -19,10 +19,8 @@ namespace FitFusion.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(20,MinimumLength=4)]
+        [StringLength(20, MinimumLength = 4)]
         public string Senha { get; set; }
-
-        public bool IsAdmin { get; set; }
 
         public float Peso { get; set; }
 
@@ -38,6 +36,13 @@ namespace FitFusion.Models
         //Usuario para treino
 
         public ICollection<TreinoModel> Treinos { get; set; }
-        
+
+        //Cargos para usuarios
+
+        // Adicione uma chave estrangeira para o cargo
+        public int CargoID { get; set; }
+
+        public CargoModel Cargo { get; set; }
+
     }
 }

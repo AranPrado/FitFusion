@@ -20,7 +20,10 @@ namespace FitFusion.Database
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
-            base.OnModelCreating(mb);
+            mb.Entity<UsuarioModel>()
+                .HasOne(u => u.Cargo)
+                .WithMany(c => c.Usuarios)
+                .HasForeignKey(u => u.CargoID);
         }
     }
 }

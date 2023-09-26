@@ -21,8 +21,7 @@ namespace FitFusion.Models
 
         
         public double Peso { get; set; } = 0;
-
-
+        
         
         public int Repeticoes { get; set; } = 0;
 
