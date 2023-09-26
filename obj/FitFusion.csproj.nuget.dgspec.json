@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj": {}
+    "C:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj": {}
   },
   "projects": {
-    "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj": {
+    "C:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
+        "projectUniqueName": "C:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
         "projectName": "FitFusion",
-        "projectPath": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
+        "projectPath": "C:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
         "packagesPath": "C:\\Users\\novo\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\obj\\",
+        "outputPath": "C:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\novo\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -39,6 +39,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.11, )"

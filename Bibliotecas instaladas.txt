@@ -9,3 +9,5 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools
 
 dotnet add package Microsoft.EntityFrameworkCore
 //ENTITYFRAMEWORK
+
+//IDENTITYFRAMEWORK ASPNETCORE
