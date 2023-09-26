@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FitFusion.Migrations
 {
     /// <inheritdoc />
-    public partial class Primeira : Migration
+    public partial class MudancaExercicioModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,7 @@ namespace FitFusion.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Senha = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Peso = table.Column<float>(type: "float", nullable: false),
                     Idade = table.Column<int>(type: "int", nullable: false),
                     Altura = table.Column<float>(type: "float", nullable: false),
@@ -49,7 +50,7 @@ namespace FitFusion.Migrations
                     Descricao = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    UsuarioId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,8 +59,7 @@ namespace FitFusion.Migrations
                         name: "FK_Treinos_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserID");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -80,7 +80,7 @@ namespace FitFusion.Migrations
                     Biset = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Drop = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    TreinoId = table.Column<int>(type: "int", nullable: false)
+                    TreinoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -89,8 +89,7 @@ namespace FitFusion.Migrations
                         name: "FK_Exercicios_Treinos_TreinoId",
                         column: x => x.TreinoId,
                         principalTable: "Treinos",
-                        principalColumn: "TreinoID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "TreinoID");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 

@@ -35,7 +35,6 @@ namespace FitFusion.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
@@ -56,7 +55,7 @@ namespace FitFusion.Migrations
                     b.Property<int>("Series")
                         .HasColumnType("int");
 
-                    b.Property<int>("TreinoId")
+                    b.Property<int?>("TreinoId")
                         .HasColumnType("int");
 
                     b.HasKey("ExercicioID");
@@ -85,7 +84,7 @@ namespace FitFusion.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("varchar(80)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("TreinoID");
@@ -139,9 +138,7 @@ namespace FitFusion.Migrations
                 {
                     b.HasOne("FitFusion.Models.TreinoModel", "Treino")
                         .WithMany("Exercicios")
-                        .HasForeignKey("TreinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TreinoId");
 
                     b.Navigation("Treino");
                 });
@@ -150,9 +147,7 @@ namespace FitFusion.Migrations
                 {
                     b.HasOne("FitFusion.Models.UsuarioModel", "Usuario")
                         .WithMany("Treinos")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
                 });

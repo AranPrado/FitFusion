@@ -1,5 +1,6 @@
 using FitFusion.Controllers;
 using FitFusion.Database;
+using FitFusion.Repositores;
 using FitFusion.Repositores.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IExerciciosRepositore, ExerciciosController>();
+builder.Services.AddScoped<ITreinosRepositore, TreinoController>();
 
 var app = builder.Build();
 

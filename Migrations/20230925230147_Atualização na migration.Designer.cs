@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230923153054_AdicionandoIsAdmin")]
-    partial class AdicionandoIsAdmin
+    [Migration("20230925230147_Atualização na migration")]
+    partial class Atualizaçãonamigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,6 @@ namespace FitFusion.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
@@ -59,7 +58,7 @@ namespace FitFusion.Migrations
                     b.Property<int>("Series")
                         .HasColumnType("int");
 
-                    b.Property<int>("TreinoId")
+                    b.Property<int?>("TreinoId")
                         .HasColumnType("int");
 
                     b.HasKey("ExercicioID");
@@ -88,7 +87,7 @@ namespace FitFusion.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("varchar(80)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("TreinoID");
@@ -142,9 +141,7 @@ namespace FitFusion.Migrations
                 {
                     b.HasOne("FitFusion.Models.TreinoModel", "Treino")
                         .WithMany("Exercicios")
-                        .HasForeignKey("TreinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TreinoId");
 
                     b.Navigation("Treino");
                 });
@@ -153,9 +150,7 @@ namespace FitFusion.Migrations
                 {
                     b.HasOne("FitFusion.Models.UsuarioModel", "Usuario")
                         .WithMany("Treinos")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
                 });

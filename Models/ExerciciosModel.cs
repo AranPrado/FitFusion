@@ -17,35 +17,40 @@ namespace FitFusion.Models
         public string Nome { get; set; }
 
         [MaxLength(500)]
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
 
-        [Range(1, 500)]
-        public double Peso { get; set; }
+        
+        public double Peso { get; set; } = 0;
 
-        [Range(1, int.MaxValue, ErrorMessage = "O campo Descanso deve ser um número inteiro positivo.")]
-        public int Repeticoes { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "O campo Descanso deve ser um número inteiro positivo.")]
-        public int Descanso { get; set; }
+        
+        public int Repeticoes { get; set; } = 0;
 
-        [Range(1, int.MaxValue, ErrorMessage = "O campo Descanso deve ser um número inteiro positivo.")]
-        public int Series { get; set; }
+
+        
+        public int Descanso { get; set; } = 0;
+
+
+        
+        public int Series { get; set; } = 0;
+
 
         public bool Biset { get; set; }
 
         public bool Drop { get; set; }
 
-        [DisplayFormat(DataFormatString = "dd/mm/yyyy")]
+        
         public DateTime DataCriacao { get; set; }
 
         //Relacionamento entre tabelas
 
         //Exercicio para treino
 
-        public int TreinoId { get; set; }
+        
+        public int? TreinoId { get; set; }
 
         [JsonIgnore]
-        public TreinoModel Treino { get; set; }
+        public TreinoModel? Treino { get; set; }
 
         //Fim
 
