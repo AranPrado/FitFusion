@@ -1657,25 +1657,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\novo\\.nuget\\packages\\": {}
+    "/home/aran/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
+      "projectUniqueName": "/home/aran/Desktop/FitFusion/FitFusion.csproj",
       "projectName": "FitFusion",
-      "projectPath": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
-      "packagesPath": "C:\\Users\\novo\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\obj\\",
+      "projectPath": "/home/aran/Desktop/FitFusion/FitFusion.csproj",
+      "packagesPath": "/home/aran/.nuget/packages/",
+      "outputPath": "/home/aran/Desktop/FitFusion/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\novo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/aran/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files\\dotnet\\sdk\\7.0.308\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1746,7 +1745,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.308\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.111/RuntimeIdentifierGraph.json"
       }
     }
   }

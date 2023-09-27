@@ -25,6 +25,8 @@ namespace FitFusion.Database
                 .HasOne(u => u.Cargo)
                 .WithMany(c => c.Usuarios)
                 .HasForeignKey(u => u.CargoID);
+
+            base.OnModelCreating(mb);    
         }
     }
 }

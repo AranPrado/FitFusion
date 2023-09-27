@@ -2,6 +2,7 @@ using FitFusion.Controllers;
 using FitFusion.Database;
 using FitFusion.Repositores;
 using FitFusion.Repositores.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion
@@ -31,6 +32,10 @@ namespace FitFusion
             services.AddSwaggerGen();
             services.AddScoped<IExerciciosRepositore, ExerciciosController>();
             services.AddScoped<ITreinosRepositore, TreinoController>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)

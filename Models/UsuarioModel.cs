@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace FitFusion.Models
 {
@@ -21,6 +22,9 @@ namespace FitFusion.Models
         [Required]
         [StringLength(20, MinimumLength = 4)]
         public string Senha { get; set; }
+
+        [Required]
+        public string ConfirmarSenha { get; set; }
 
         public float Peso { get; set; }
 
