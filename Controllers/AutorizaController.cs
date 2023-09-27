@@ -1,3 +1,4 @@
+using AutoMapper;
 using FitFusion.Database;
 using FitFusion.DTOs;
 using FitFusion.Models;
@@ -11,17 +12,25 @@ namespace FitFusion.Controllers
 
     public class AutorizaController : ControllerBase
     {
+        private readonly IMapper _mapper;
+
         private readonly AppDbContext _contexto;
 
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _singInManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AutorizaController(UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
-        {
-            _userManager = userManager;
-            _singInManager = signInManager;
-        }
+        public AutorizaController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IMapper mapper,
+            AppDbContext contexto)
+                {
+                    _userManager = userManager;
+                    _signInManager = signInManager;
+                    _mapper = mapper;
+                    _contexto = contexto;
+                }
+
 
         [HttpGet]
         public ActionResult<string> Get()
@@ -30,7 +39,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegistrarUsuario([FromBody] UsuarioModel model)
+        public async Task<ActionResult> RegistrarUsuario([FromBody] UsuarioDTO model)
         {
             // if(!ModelState.IsValid)
             // {
@@ -39,7 +48,7 @@ namespace FitFusion.Controllers
 
             var user = new IdentityUser
             {
-                UserName = model.Nome,
+                UserName = model.Email,
                 Email = model.Email,
                 EmailConfirmed = true,
             };
@@ -48,20 +57,14 @@ namespace FitFusion.Controllers
 
             if (resulto.Succeeded)
             {
-                var usuarioModel = new UsuarioModel
-                {
-                    Nome = model.Nome,
-                    Peso = model.Peso,
-                    Idade = model.Idade,
-                    Altura = model.Altura
-                };
+                var usuarioModel = _mapper.Map<UsuarioModel>(model);
 
                 _contexto.Usuarios.Add(usuarioModel);
                 await _contexto.SaveChangesAsync();
 
-                await _singInManager.SignInAsync(user, false);
+                await _signInManager.SignInAsync(user, false);
                 return Ok();
-            } 
+            }
             else
             {
                 return BadRequest(resulto.Errors);
@@ -71,9 +74,9 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login([FromBody] UsuarioModel usuarioInfo)
+        public async Task<ActionResult> Login([FromBody] LoginDTO usuarioInfo)
         {
-            var resultado = await _singInManager.PasswordSignInAsync(usuarioInfo.Email,
+            var resultado = await _signInManager.PasswordSignInAsync(usuarioInfo.Email,
             usuarioInfo.Senha, isPersistent: false, lockoutOnFailure: false);
 
             if (resultado.Succeeded)

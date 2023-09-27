@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,13 +20,6 @@ namespace FitFusion.Models
         [Required]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(20, MinimumLength = 4)]
-        public string Senha { get; set; }
-
-        [Required]
-        public string ConfirmarSenha { get; set; }
-
         public float Peso { get; set; }
 
         public int Idade { get; set; }
@@ -39,14 +33,15 @@ namespace FitFusion.Models
 
         //Usuario para treino
 
+        
         public ICollection<TreinoModel> Treinos { get; set; }
 
         //Cargos para usuarios
 
         // Adicione uma chave estrangeira para o cargo
-        public int CargoID { get; set; }
+        public int? CargoID { get; set; }
 
-        public CargoModel Cargo { get; set; }
+        public CargoModel? Cargo { get; set; }
 
     }
 }

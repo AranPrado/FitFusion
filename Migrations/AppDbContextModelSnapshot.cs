@@ -122,6 +122,10 @@ namespace FitFusion.Migrations
                     b.Property<int>("CargoID")
                         .HasColumnType("int");
 
+                    b.Property<string>("ConfirmarSenha")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");
 

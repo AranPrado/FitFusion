@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230927014258_identity")]
-    partial class identity
+    [Migration("20230927135914_Identity")]
+    partial class Identity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,6 +124,10 @@ namespace FitFusion.Migrations
 
                     b.Property<int>("CargoID")
                         .HasColumnType("int");
+
+                    b.Property<string>("ConfirmarSenha")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");

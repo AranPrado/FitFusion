@@ -11,13 +11,13 @@ namespace FitFusion.Database
     public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {}
+        { }
 
-        public DbSet<ExerciciosModel> Exercicios{ get; set; }
+        public DbSet<ExerciciosModel> Exercicios { get; set; }
 
         public DbSet<TreinoModel> Treinos { get; set; }
 
-        public DbSet<UsuarioModel> Usuarios{ get; set; }
+        public DbSet<UsuarioModel> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
@@ -26,7 +26,9 @@ namespace FitFusion.Database
                 .WithMany(c => c.Usuarios)
                 .HasForeignKey(u => u.CargoID);
 
-            base.OnModelCreating(mb);    
+            base.OnModelCreating(mb);
         }
+
+
     }
 }

@@ -11,3 +11,7 @@ dotnet add package Microsoft.EntityFrameworkCore
 //ENTITYFRAMEWORK
 
 //IDENTITYFRAMEWORK ASPNETCORE
+
+//AUTOMAPPER 7.0.11
+
+//AUTOMAPPER Dependencias

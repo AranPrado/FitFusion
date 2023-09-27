@@ -1,5 +1,7 @@
+using AutoMapper;
 using FitFusion.Controllers;
 using FitFusion.Database;
+using FitFusion.DTOs.Mapeamento;
 using FitFusion.Repositores;
 using FitFusion.Repositores.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +20,19 @@ namespace FitFusion
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //Configuração DTO//
+
+            var mappingConfig = new MapperConfiguration(mc => {
+                mc.AddProfile(new MappingProfile());
+            });   
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            
+
+            //Fim//
 
             var connectionString = Configuration.GetConnectionString("DataBase");
 

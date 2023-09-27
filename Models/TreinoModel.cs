@@ -32,6 +32,7 @@ namespace FitFusion.Models
         //Relacionamento para o usuario
 
         public int? UsuarioId { get; set; }
+        
         [JsonIgnore]
         public UsuarioModel? Usuario { get; set; }
 
