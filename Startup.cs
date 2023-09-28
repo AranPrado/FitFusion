@@ -1,11 +1,14 @@
+using System.Text;
 using AutoMapper;
 using FitFusion.Controllers;
 using FitFusion.Database;
 using FitFusion.DTOs.Mapeamento;
 using FitFusion.Repositores;
 using FitFusion.Repositores.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FitFusion
 {
@@ -51,6 +54,21 @@ namespace FitFusion
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidAudience = Configuration["TokenConfiguration:Audience"],
+                        ValidIssuer = Configuration["TokenConfiguration:Issuer"],
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["Jwt:key"])
+                        )
+                    });
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
@@ -66,6 +84,8 @@ namespace FitFusion
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

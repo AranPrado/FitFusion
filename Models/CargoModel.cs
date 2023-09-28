@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FitFusion.Models
 {
@@ -11,7 +12,8 @@ namespace FitFusion.Models
         [MaxLength(50)]
         public string Nome { get; set; }
 
-        public ICollection<UsuarioModel> Usuarios { get; set; }
+        [JsonIgnore]
+        public ICollection<UsuarioModel>? Usuarios { get; set; }
 
     }
 }

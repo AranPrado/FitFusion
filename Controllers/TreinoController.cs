@@ -1,11 +1,13 @@
 using FitFusion.Database;
 using FitFusion.Models;
 using FitFusion.Repositores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
-{
+{   
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
 

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230927135914_Identity")]
-    partial class Identity
+    [Migration("20230928025705_AdicionandoCargos")]
+    partial class AdicionandoCargos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace FitFusion.Migrations
 
                     b.HasKey("CargoID");
 
-                    b.ToTable("CargoModel");
+                    b.ToTable("Cargos");
                 });
 
             modelBuilder.Entity("FitFusion.Models.ExerciciosModel", b =>
@@ -122,12 +122,8 @@ namespace FitFusion.Migrations
                     b.Property<float>("Altura")
                         .HasColumnType("float");
 
-                    b.Property<int>("CargoID")
+                    b.Property<int?>("CargoID")
                         .HasColumnType("int");
-
-                    b.Property<string>("ConfirmarSenha")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");
@@ -146,11 +142,6 @@ namespace FitFusion.Migrations
 
                     b.Property<float>("Peso")
                         .HasColumnType("float");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
 
                     b.HasKey("UserID");
 
@@ -373,9 +364,7 @@ namespace FitFusion.Migrations
                 {
                     b.HasOne("FitFusion.Models.CargoModel", "Cargo")
                         .WithMany("Usuarios")
-                        .HasForeignKey("CargoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CargoID");
 
                     b.Navigation("Cargo");
                 });

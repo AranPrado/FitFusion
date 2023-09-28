@@ -8,6 +8,8 @@ namespace FitFusion.DTOs.Mapeamento
         public MappingProfile()
         {
             CreateMap<UsuarioModel, UsuarioDTO>().ReverseMap();
+
+            CreateMap<UsuarioDTO, LoginDTO>().ReverseMap();
         }
     }
 }

@@ -221,15 +221,11 @@ namespace FitFusion.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Senha = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConfirmarSenha = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Peso = table.Column<float>(type: "float", nullable: false),
                     Idade = table.Column<int>(type: "int", nullable: false),
                     Altura = table.Column<float>(type: "float", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CargoID = table.Column<int>(type: "int", nullable: false)
+                    CargoID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -238,8 +234,7 @@ namespace FitFusion.Migrations
                         name: "FK_Usuarios_CargoModel_CargoID",
                         column: x => x.CargoID,
                         principalTable: "CargoModel",
-                        principalColumn: "CargoID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CargoID");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 

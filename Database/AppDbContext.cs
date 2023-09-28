@@ -19,6 +19,9 @@ namespace FitFusion.Database
 
         public DbSet<UsuarioModel> Usuarios { get; set; }
 
+        public DbSet<CargoModel> Cargos { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.Entity<UsuarioModel>()

@@ -1,9 +1,13 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using AutoMapper;
 using FitFusion.Database;
 using FitFusion.DTOs;
 using FitFusion.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FitFusion.Controllers
 {
@@ -18,18 +22,22 @@ namespace FitFusion.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
         public AutorizaController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IMapper mapper,
-            AppDbContext contexto)
-                {
-                    _userManager = userManager;
-                    _signInManager = signInManager;
-                    _mapper = mapper;
-                    _contexto = contexto;
-                }
+            AppDbContext contexto,
+            IConfiguration configuration
+            )
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _mapper = mapper;
+            _contexto = contexto;
+            _configuration = configuration;
+        }
 
 
         [HttpGet]
@@ -63,7 +71,7 @@ namespace FitFusion.Controllers
                 await _contexto.SaveChangesAsync();
 
                 await _signInManager.SignInAsync(user, false);
-                return Ok();
+                return Ok(GerarToken(model));
             }
             else
             {
@@ -74,20 +82,58 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login([FromBody] LoginDTO usuarioInfo)
+        public async Task<ActionResult> Login([FromBody] LoginDTO loginInfo)
         {
-            var resultado = await _signInManager.PasswordSignInAsync(usuarioInfo.Email,
-            usuarioInfo.Senha, isPersistent: false, lockoutOnFailure: false);
+            var resultado = await _signInManager.PasswordSignInAsync(loginInfo.Email,
+                loginInfo.Senha, isPersistent: false, lockoutOnFailure: false);
 
             if (resultado.Succeeded)
             {
-                return Ok();
+                // Autenticação bem-sucedida; crie um UsuarioDTO com base no email
+                var usuarioInfo = new UsuarioDTO { Email = loginInfo.Email };
+
+                return Ok(GerarToken(usuarioInfo));
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Login Invalido....");
+                ModelState.AddModelError(string.Empty, "Login Inválido....");
                 return BadRequest(ModelState);
             }
+        }
+
+
+        private UsuarioToken GerarToken(UsuarioDTO usuarioInfo)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.UniqueName, usuarioInfo.Email),
+                new Claim("teste", "Aran"),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]));
+
+            var credenciais = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var expiracao = _configuration["TokenConfiguration:ExpireHours"];
+            var expiration = DateTime.UtcNow.AddHours(double.Parse(expiracao));
+
+            JwtSecurityToken token = new JwtSecurityToken
+            (
+                issuer: _configuration["TokenConfiguration:Issuer"],
+                audience: _configuration["TokenConfiguration:Audience"],
+                claims: claims,
+                expires: expiration,
+                signingCredentials: credenciais
+            );
+
+            return new UsuarioToken()
+            {
+                Autenticado = true,
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expiration,
+                Message = "Token JWT OK"
+            };
         }
     }
 }
