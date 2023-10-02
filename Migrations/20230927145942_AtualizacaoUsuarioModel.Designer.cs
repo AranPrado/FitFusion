@@ -3,6 +3,7 @@ using System;
 using FitFusion.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,14 +11,32 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230927145942_AtualizacaoUsuarioModel")]
+    partial class AtualizacaoUsuarioModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("FitFusion.Models.CargoModel", b =>
+                {
+                    b.Property<int>("CargoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("CargoID");
+
+                    b.ToTable("CargoModel");
+                });
 
             modelBuilder.Entity("FitFusion.Models.ExerciciosModel", b =>
                 {
@@ -103,9 +122,8 @@ namespace FitFusion.Migrations
                     b.Property<float>("Altura")
                         .HasColumnType("float");
 
-                    b.Property<string>("AspNetUserID")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int?>("CargoID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");
@@ -126,6 +144,8 @@ namespace FitFusion.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("UserID");
+
+                    b.HasIndex("CargoID");
 
                     b.ToTable("Usuarios");
                 });
@@ -296,14 +316,9 @@ namespace FitFusion.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int?>("UsuarioModelUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UsuarioModelUserID");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -343,6 +358,15 @@ namespace FitFusion.Migrations
                         .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("FitFusion.Models.UsuarioModel", b =>
+                {
+                    b.HasOne("FitFusion.Models.CargoModel", "Cargo")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("CargoID");
+
+                    b.Navigation("Cargo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -385,10 +409,6 @@ namespace FitFusion.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("FitFusion.Models.UsuarioModel", null)
-                        .WithMany("AspNetRoles")
-                        .HasForeignKey("UsuarioModelUserID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -400,6 +420,11 @@ namespace FitFusion.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FitFusion.Models.CargoModel", b =>
+                {
+                    b.Navigation("Usuarios");
+                });
+
             modelBuilder.Entity("FitFusion.Models.TreinoModel", b =>
                 {
                     b.Navigation("Exercicios");
@@ -407,8 +432,6 @@ namespace FitFusion.Migrations
 
             modelBuilder.Entity("FitFusion.Models.UsuarioModel", b =>
                 {
-                    b.Navigation("AspNetRoles");
-
                     b.Navigation("Treinos");
                 });
 #pragma warning restore 612, 618

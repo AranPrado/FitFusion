@@ -3,6 +3,7 @@ using System;
 using FitFusion.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231002135838_remocaoCargos")]
+    partial class remocaoCargos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,10 +105,6 @@ namespace FitFusion.Migrations
 
                     b.Property<float>("Altura")
                         .HasColumnType("float");
-
-                    b.Property<string>("AspNetUserID")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");
@@ -296,14 +295,9 @@ namespace FitFusion.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int?>("UsuarioModelUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UsuarioModelUserID");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -385,10 +379,6 @@ namespace FitFusion.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("FitFusion.Models.UsuarioModel", null)
-                        .WithMany("AspNetRoles")
-                        .HasForeignKey("UsuarioModelUserID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -407,8 +397,6 @@ namespace FitFusion.Migrations
 
             modelBuilder.Entity("FitFusion.Models.UsuarioModel", b =>
                 {
-                    b.Navigation("AspNetRoles");
-
                     b.Navigation("Treinos");
                 });
 #pragma warning restore 612, 618

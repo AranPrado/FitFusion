@@ -19,15 +19,11 @@ namespace FitFusion.Database
 
         public DbSet<UsuarioModel> Usuarios { get; set; }
 
-        public DbSet<CargoModel> Cargos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
-            mb.Entity<UsuarioModel>()
-                .HasOne(u => u.Cargo)
-                .WithMany(c => c.Usuarios)
-                .HasForeignKey(u => u.CargoID);
+          
 
             base.OnModelCreating(mb);
         }

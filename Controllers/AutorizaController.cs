@@ -24,12 +24,15 @@ namespace FitFusion.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
 
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         public AutorizaController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IMapper mapper,
             AppDbContext contexto,
-            IConfiguration configuration
+            IConfiguration configuration,
+            RoleManager<IdentityRole> roleManager
             )
         {
             _userManager = userManager;
@@ -37,6 +40,7 @@ namespace FitFusion.Controllers
             _mapper = mapper;
             _contexto = contexto;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
 
@@ -66,6 +70,11 @@ namespace FitFusion.Controllers
             if (resulto.Succeeded)
             {
                 var usuarioModel = _mapper.Map<UsuarioModel>(model);
+
+                var aspNetUserId = user.Id;
+
+                usuarioModel.AspNetUserID = aspNetUserId;
+
 
                 _contexto.Usuarios.Add(usuarioModel);
                 await _contexto.SaveChangesAsync();
@@ -100,6 +109,52 @@ namespace FitFusion.Controllers
                 return BadRequest(ModelState);
             }
         }
+
+        [HttpPost("CriarRoles")]
+        public async Task<IActionResult> CriarRoles([FromBody] string roleNome)
+        {
+            var role = new IdentityRole { Name = roleNome };
+            var resultado = await _roleManager.CreateAsync(role);
+
+            if (resultado.Succeeded)
+            {
+                return Ok("Função criada com sucesso.");
+            }
+            else
+            {
+                return BadRequest(resultado.Errors);
+            }
+        }
+
+        [HttpPost("roleUsuario/{userId}")]
+        public async Task<IActionResult> AdicionarRoleAoUsuario(string userId, [FromBody] string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return BadRequest("Usuário não encontrado.");
+            }
+
+            var role = await _roleManager.FindByNameAsync(roleName);
+
+            if (role == null)
+            {
+                return BadRequest("Função não encontrada.");
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+            {
+                return Ok("Função adicionada ao usuário com sucesso.");
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
 
 
         private UsuarioToken GerarToken(UsuarioDTO usuarioInfo)

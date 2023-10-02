@@ -5,6 +5,9 @@ namespace FitFusion.DTOs
 {
     public class UsuarioDTO
     {
+
+        public int UserID { get; set; }
+
         public string Nome { get; set; }
 
         public string Email { get; set; }
@@ -18,8 +21,6 @@ namespace FitFusion.DTOs
         public int Idade { get; set; }
 
         public float Altura { get; set; }
-
-        public int? CargoID { get; set; }
 
         [JsonIgnore]
         public ICollection<TreinoModel>? Treinos { get; set; }

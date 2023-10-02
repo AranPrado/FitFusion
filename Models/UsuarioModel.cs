@@ -13,6 +13,8 @@ namespace FitFusion.Models
         [Key]
         public int UserID { get; set; }
 
+        public string AspNetUserID { get; set; }
+
         [Required(ErrorMessage = "O nome do usuário é obrigatório")]
         [MaxLength(150)]
         public string Nome { get; set; }
@@ -33,15 +35,13 @@ namespace FitFusion.Models
 
         //Usuario para treino
 
-        
+
         public ICollection<TreinoModel> Treinos { get; set; }
 
         //Cargos para usuarios
 
-        // Adicione uma chave estrangeira para o cargo
-        public int? CargoID { get; set; }
+       public string RoleName { get; set; }
 
-        public CargoModel? Cargo { get; set; }
 
     }
 }
