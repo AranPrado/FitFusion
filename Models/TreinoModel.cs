@@ -39,7 +39,7 @@ namespace FitFusion.Models
         //Fim
 
         //Relacionamento para os Exercicios
-        [JsonIgnore]
+
         public ICollection<ExerciciosModel> Exercicios { get; set; }
 
     }

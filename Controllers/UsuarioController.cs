@@ -1,0 +1,126 @@
+using FitFusion.Database;
+using FitFusion.DTOs;
+using FitFusion.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace FitFusion.Controllers
+{
+
+    [Route("api/[controller]")]
+    [ApiController]
+
+    public class UsuarioController : ControllerBase
+    {
+
+        private readonly AppDbContext _contexto;
+
+        public UsuarioController(AppDbContext contexto)
+        {
+            _contexto = contexto;
+        }
+
+        [HttpGet("UsuarioID/{id}")]
+        public async Task<ActionResult<UsuarioModel>> ListaUsuarioId(string id)
+        {
+            var usuarioID = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
+
+            if (usuarioID == null)
+            {
+                return new NotFoundObjectResult("Usuario não encontrado");
+            }
+
+            return usuarioID;
+        }
+
+        [HttpGet("TreinosComExercicios/{id}")]
+        public async Task<ActionResult<IEnumerable<TreinoExerciciosDTO>>> ObterTreinosComExerciciosDoUsuario(string id)
+        {
+            // Verifica se o usuário com o ID especificado existe
+            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
+
+            if (usuario == null)
+            {
+                return new NotFoundObjectResult("Usuário não encontrado");
+            }
+
+            // Obtém os treinos associados a esse usuário incluindo os exercícios
+            var treinosComExercicios = await _contexto.Treinos
+                .Include(t => t.Exercicios) // Inclui os exercícios relacionados aos treinos
+                .Where(t => t.UsuarioId == usuario.UserID)
+                .ToListAsync();
+
+            // Mapeia os treinos e exercícios para o DTO TreinoExerciciosDTO
+            var treinosExerciciosDTO = treinosComExercicios.Select(treino => new TreinoExerciciosDTO
+            {
+                TreinoID = treino.TreinoID,
+                Nome = treino.Nome,
+                Descricao = treino.Descricao,
+                Exercicios = treino.Exercicios // Os exercícios já estão incluídos devido ao Include acima
+            }).ToList();
+
+            return treinosExerciciosDTO;
+        }
+
+
+
+        [HttpPut("AtualizarUsuarioID/{id}")]
+        public async Task<ActionResult<UsuarioModel>> AtualizarUsuarioId(string id, [FromBody] EditUsuarioDTO usuarioAtualizado)
+        {
+            var usuarioExistente = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
+
+            if (usuarioExistente == null)
+            {
+                return new NotFoundObjectResult("Usuário não encontrado");
+            }
+
+            if (!string.IsNullOrEmpty(usuarioAtualizado.Nome))
+            {
+                usuarioExistente.Nome = usuarioAtualizado.Nome;
+            }
+
+            if (!string.IsNullOrEmpty(usuarioAtualizado.Email))
+            {
+                usuarioExistente.Email = usuarioAtualizado.Email;
+            }
+
+            if (usuarioAtualizado.Peso != null)
+            {
+                usuarioExistente.Peso = usuarioAtualizado.Peso;
+            }
+
+            if (usuarioAtualizado.Idade != null)
+            {
+                usuarioExistente.Idade = usuarioAtualizado.Idade;
+            }
+
+            if (usuarioAtualizado.Altura != null)
+            {
+                usuarioExistente.Altura = usuarioAtualizado.Altura;
+            }
+
+            // Certifique-se de atualizar outros campos, se necessário.
+
+            await _contexto.SaveChangesAsync();
+
+            return usuarioExistente;
+        }
+
+        [HttpDelete("DeletaUsuarioID/{id}")]
+        public async Task<ActionResult<bool>> DeletarUsuario(string id)
+        {
+            var usuarioExistente = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
+
+            if (usuarioExistente == null)
+            {
+                return new NotFoundObjectResult("Usuário não encontrado");
+            }
+
+            _contexto.Usuarios.Remove(usuarioExistente);
+            await _contexto.SaveChangesAsync();
+            return true;
+        }
+
+
+    }
+}
