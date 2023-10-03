@@ -57,6 +57,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarTreino")]
+        [Authorize(Roles = "Admin")]
         public async Task<TreinoModel> CriarNovoTreino([FromBody] TreinoModel treino)
         {
             try

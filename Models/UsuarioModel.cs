@@ -40,8 +40,6 @@ namespace FitFusion.Models
 
         //Cargos para usuarios
 
-       public string RoleName { get; set; }
-
 
     }
 }

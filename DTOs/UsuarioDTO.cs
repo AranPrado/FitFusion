@@ -1,5 +1,7 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using FitFusion.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace FitFusion.DTOs
 {
@@ -14,6 +16,7 @@ namespace FitFusion.DTOs
 
         public string Senha { get; set; }
 
+        [NotMapped]
         public string ConfirmarSenha { get; set; }
 
         public float Peso { get; set; }
@@ -25,6 +28,7 @@ namespace FitFusion.DTOs
         [JsonIgnore]
         public ICollection<TreinoModel>? Treinos { get; set; }
 
+        
 
     }
 }

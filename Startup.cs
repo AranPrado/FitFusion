@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using FitFusion.Controllers;
@@ -49,7 +50,37 @@ namespace FitFusion
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+
+            services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minha API", Version = "v1" });
+
+                    // Configure o esquema de segurança JWT no Swagger
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey
+                    });
+
+                    var securityScheme = new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    };
+                    var securityRequirement = new OpenApiSecurityRequirement
+                    {
+                        { securityScheme, new[] { string.Empty } }
+                    };
+                    c.AddSecurityRequirement(securityRequirement);
+                });
+
+
+
             services.AddScoped<IExerciciosRepositore, ExerciciosController>();
             services.AddScoped<ITreinosRepositore, TreinoController>();
 
@@ -59,6 +90,7 @@ namespace FitFusion
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -70,53 +102,36 @@ namespace FitFusion
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(Configuration["Jwt:key"])
                         )
-                    });
+                    };
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minha API V1", Version = "v1" });
-
-                // Adicione a descrição do esquema de segurança JWT
-                var securityScheme = new OpenApiSecurityScheme
-                {
-                    Name = "JWT Authentication",
-                    Description = "Enter JWT token.",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer", // O esquema do token (geralmente "bearer" para JWT)
-                    BearerFormat = "JWT",
-                    Reference = new OpenApiReference
+                    options.Events = new JwtBearerEvents
                     {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                };
-
-                c.AddSecurityDefinition("Bearer", securityScheme);
-
-                // Adicione a operação de segurança aos endpoints que exigem autenticação JWT
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
+                        OnTokenValidated = context =>
                         {
-                            Reference = new OpenApiReference
+                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                            if (claimsIdentity != null)
                             {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                // Obtenha o ID do usuário do token e defina-o como um valor inteiro
+                                var userIdClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                                if (userIdClaim != null)
+                                {
+                                    claimsIdentity.RemoveClaim(userIdClaim);
+                                    claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userIdClaim.Value));
+                                }
                             }
-                        },
-                        new string[] { }
-                    }
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
-            });
+
+
 
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
         {
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
