@@ -2,12 +2,14 @@ using FitFusion.Database;
 using FitFusion.DTOs;
 using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
 
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
 

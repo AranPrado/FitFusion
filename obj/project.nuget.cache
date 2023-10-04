@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5IXMuJcJ5VMPV8hdlyLlPAygXhmUHnO9HkzuT9BtGWE1sxQj4JZtJSwgi3R3levGjD46ioFxrx7Q/MUb6rV1iA==",
+  "dgSpecHash": "ytCeb0vHCVAuAMEYUDaITcw6G/FyRhxdb+EPDi35vWr46PE13C0OZ1P/0QnUUqYo6Pk0xI5kq8DIUXbcQj6pXA==",
   "success": true,
-  "projectFilePath": "c:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
+  "projectFilePath": "C:\\Users\\novo\\Desktop\\dotnet\\FitFusion\\FitFusion.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\novo\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\novo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.0\\automapper.extensions.microsoft.dependencyinjection.8.1.0.nupkg.sha512",

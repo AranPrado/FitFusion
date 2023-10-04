@@ -2,9 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using FitFusion.Constants;
 using FitFusion.Database;
 using FitFusion.DTOs;
 using FitFusion.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -131,6 +133,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarRoles")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> CriarRoles([FromBody] RoleDTO roleInfo)
         {
             if (roleInfo == null || string.IsNullOrEmpty(roleInfo.RoleName))
@@ -159,6 +162,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("roleUsuario/{userId}")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> AdicionarRoleAoUsuario(
             string userId,
             [FromBody] RoleIdDTO role

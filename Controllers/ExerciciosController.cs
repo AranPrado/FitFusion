@@ -1,6 +1,8 @@
+using FitFusion.Constants;
 using FitFusion.Database;
 using FitFusion.Models;
 using FitFusion.Repositores.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +10,10 @@ using Microsoft.EntityFrameworkCore;
 namespace FitFusion.Controllers
 {
 
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
+    
 
     public class ExerciciosController : IExerciciosRepositore
     {
@@ -21,6 +25,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<IEnumerable<ExerciciosModel>> ListarTodosExercicios()
         {
             try
@@ -35,6 +40,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("{id}", Name = "ExercicioId")]
+         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<ExerciciosModel>> ProcurarExercicioPorId(int id)
         {
             try
@@ -56,6 +62,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarExercicio")]
+         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ExerciciosModel> CriarNovoExercicio([FromBody] ExerciciosModel exercicio)
         {
             try
@@ -73,6 +80,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPut("Atualizar/{id}")]
+         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<ExerciciosModel>> AtualizarExercicio(ExerciciosModel exercicioAtualizado, int id)
         {
             try
@@ -138,6 +146,7 @@ namespace FitFusion.Controllers
 
 
         [HttpDelete("Deleta/{id}")]
+         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<bool>> DeletaExercicio(int id)
         {
             try

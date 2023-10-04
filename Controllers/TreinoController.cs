@@ -1,3 +1,4 @@
+using FitFusion.Constants;
 using FitFusion.Database;
 using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
@@ -23,6 +24,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<IEnumerable<TreinoModel>> ListarTodosTreinos()
         {
             try
@@ -37,6 +39,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<TreinoModel>> ProcurarTreinoPorId(int id)
         {
             try
@@ -58,7 +61,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarTreino")]
-        [Authorize(Roles = "Treinador")]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<TreinoModel>> CriarNovoTreino([FromBody] CriarTreino treinoDto)
         {
             try
@@ -87,6 +90,7 @@ namespace FitFusion.Controllers
 
 
         [HttpPut("Atualizar/{id}")]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<TreinoModel>> AtualizarTreino(TreinoModel treinoAtualizado, int id)
         {
             try
@@ -126,6 +130,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpDelete("Deleta/{id}")]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<bool>> DeletaTreino(int id)
         {
             try
@@ -150,6 +155,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("Usuarios")]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<IEnumerable<UsuarioTreinosDTO>>> ListarTreinosUsuario()
         {
             try
@@ -182,6 +188,7 @@ namespace FitFusion.Controllers
 
 
         [HttpGet("Exercicios")]
+        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
         public async Task<ActionResult<TreinoComExercicioDTO>> ListarExerciciosPorTreino(int treinoId)
         {
             try
