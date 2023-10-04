@@ -9,5 +9,7 @@ namespace FitFusion.DTOs
         public string Token { get; set; }
 
         public string Message { get; set; }
+
+        public string AspNetUserID { get; set; }
     }
 }

@@ -2,6 +2,6 @@ namespace FitFusion.DTOs
 {
     public class RoleIdDTO
     {
-        public string RoleID { get; set; }
+        public string RoleNome { get; set; }
     }
 }

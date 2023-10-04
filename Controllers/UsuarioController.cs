@@ -1,5 +1,6 @@
 using FitFusion.Database;
 using FitFusion.DTOs;
+using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace FitFusion.Controllers
             _contexto = contexto;
         }
 
-        [HttpGet("UsuarioID/{id}")]
+        [HttpGet("InformacoesUsuario/{id}")]
         public async Task<ActionResult<UsuarioModel>> ListaUsuarioId(string id)
         {
             var usuarioID = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
@@ -34,33 +35,41 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("TreinosComExercicios/{id}")]
-        public async Task<ActionResult<IEnumerable<TreinoExerciciosDTO>>> ObterTreinosComExerciciosDoUsuario(string id)
+        public async Task<ActionResult<IEnumerable<TreinoComExercicioDTO>>> ObterTreinosComExerciciosDoUsuario(string id)
         {
-            // Verifica se o usuário com o ID especificado existe
-            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
-
-            if (usuario == null)
+            try
             {
-                return new NotFoundObjectResult("Usuário não encontrado");
+                // Verifica se o usuário com o ID especificado existe
+                var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                // Obtém os treinos associados a esse usuário incluindo os exercícios
+                var treinosComExercicios = await _contexto.Treinos
+                    .Include(t => t.Exercicios) // Inclui os exercícios relacionados aos treinos
+                    .Where(t => t.UsuarioId == usuario.UserID)
+                    .ToListAsync();
+
+                // Mapeia os treinos e exercícios para o DTO TreinoComExercicioDTO
+                var treinosExerciciosDTO = treinosComExercicios.Select(treino => new TreinoComExercicioDTO
+                {
+                    TreinoID = treino.TreinoID,
+                    NomeTreino = treino.Nome,
+                    DescricaoTreino = treino.Descricao,
+                    Exercicios = treino.Exercicios.ToList() // Lista de exercícios
+                }).ToList();
+
+                return treinosExerciciosDTO;
             }
-
-            // Obtém os treinos associados a esse usuário incluindo os exercícios
-            var treinosComExercicios = await _contexto.Treinos
-                .Include(t => t.Exercicios) // Inclui os exercícios relacionados aos treinos
-                .Where(t => t.UsuarioId == usuario.UserID)
-                .ToListAsync();
-
-            // Mapeia os treinos e exercícios para o DTO TreinoExerciciosDTO
-            var treinosExerciciosDTO = treinosComExercicios.Select(treino => new TreinoExerciciosDTO
+            catch (System.Exception)
             {
-                TreinoID = treino.TreinoID,
-                Nome = treino.Nome,
-                Descricao = treino.Descricao,
-                Exercicios = treino.Exercicios // Os exercícios já estão incluídos devido ao Include acima
-            }).ToList();
-
-            return treinosExerciciosDTO;
+                throw;
+            }
         }
+
 
 
 

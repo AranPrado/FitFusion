@@ -15,6 +15,6 @@ namespace FitFusion.Repositores.Interfaces
 
         Task<ActionResult<bool>> DeletaExercicio(int id);
 
-        Task<ActionResult<IEnumerable<ExerciciosModel>>> ListarExerciciosTreino();
+       
     }
 }

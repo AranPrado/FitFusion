@@ -160,13 +160,6 @@ namespace FitFusion.Controllers
             }
         }
 
-        //Adicionar uma lista para recuperar todos os exercicios e em quais treinos eles estão. Exercicios => Treinos
-        [HttpGet("Treinos")]
-        public async Task<ActionResult<IEnumerable<ExerciciosModel>>> ListarExerciciosTreino()
-        {
-            return await _contexto.Exercicios.Include(t => t.Treino).ToListAsync();
-        }
-
 
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231002135838_remocaoCargos")]
-    partial class remocaoCargos
+    [Migration("20231004123734_RealizandoMigrationServico")]
+    partial class RealizandoMigrationServico
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,10 @@ namespace FitFusion.Migrations
 
                     b.Property<float>("Altura")
                         .HasColumnType("float");
+
+                    b.Property<string>("AspNetUserID")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");

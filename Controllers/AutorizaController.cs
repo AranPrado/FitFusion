@@ -13,7 +13,6 @@ namespace FitFusion.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class AutorizaController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -33,7 +32,7 @@ namespace FitFusion.Controllers
             AppDbContext contexto,
             IConfiguration configuration,
             RoleManager<IdentityRole> roleManager
-            )
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -42,7 +41,6 @@ namespace FitFusion.Controllers
             _configuration = configuration;
             _roleManager = roleManager;
         }
-
 
         [HttpGet]
         public ActionResult<string> Get()
@@ -86,19 +84,44 @@ namespace FitFusion.Controllers
             }
         }
 
-
         [HttpPost("Login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginInfo)
         {
-            var resultado = await _signInManager.PasswordSignInAsync(loginInfo.Email,
-                loginInfo.Senha, isPersistent: false, lockoutOnFailure: false);
+            var resultado = await _signInManager.PasswordSignInAsync(
+                loginInfo.Email,
+                loginInfo.Senha,
+                isPersistent: false,
+                lockoutOnFailure: false
+            );
 
             if (resultado.Succeeded)
             {
-                // Autenticação bem-sucedida; crie um UsuarioDTO com base no email
                 var usuarioInfo = new UsuarioDTO { Email = loginInfo.Email };
+                var token = GerarToken(usuarioInfo);
 
-                return Ok(GerarToken(usuarioInfo));
+                // Obtenha o usuário atualmente autenticado
+                var user = await _userManager.FindByEmailAsync(loginInfo.Email);
+
+                // Verifique se o usuário foi encontrado
+                if (user != null)
+                {
+                    // Defina o AspNetUserID no objeto UsuarioToken
+                    var usuarioToken = new UsuarioToken
+                    {
+                        Autenticado = true,
+                        Expiration = token.Expiration,
+                        Token = token.Token,
+                        Message = token.Message,
+                        AspNetUserID = user.Id // Defina o AspNetUserID aqui
+                    };
+
+                    return Ok(usuarioToken);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Usuário não encontrado.");
+                    return BadRequest(ModelState);
+                }
             }
             else
             {
@@ -127,7 +150,7 @@ namespace FitFusion.Controllers
 
             if (resultado.Succeeded)
             {
-                return Ok("Função criada com sucesso." + role);
+                return Ok("Função criada com sucesso. " + role.Id);
             }
             else
             {
@@ -135,14 +158,15 @@ namespace FitFusion.Controllers
             }
         }
 
-
-
         [HttpPost("roleUsuario/{userId}")]
-        public async Task<IActionResult> AdicionarRoleAoUsuario(string userId, [FromBody] RoleIdDTO roleIdDto)
+        public async Task<IActionResult> AdicionarRoleAoUsuario(
+            string userId,
+            [FromBody] RoleIdDTO role
+        )
         {
-            if (string.IsNullOrEmpty(userId) || roleIdDto == null || string.IsNullOrEmpty(roleIdDto.RoleID))
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role.RoleNome))
             {
-                return BadRequest("O ID do usuário e o ID da função são obrigatórios.");
+                return BadRequest("O ID do usuário e o nome da função são obrigatórios.");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -152,14 +176,18 @@ namespace FitFusion.Controllers
                 return BadRequest("Usuário não encontrado.");
             }
 
-            var role = await _roleManager.FindByIdAsync(roleIdDto.RoleID);
+            var roleName = role.RoleNome; // Obtenha o nome da função do DTO
 
-            if (role == null)
+            // Verifique se a função existe
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+
+            if (!roleExists)
             {
                 return BadRequest("Função não encontrada.");
             }
 
-            var result = await _userManager.AddToRoleAsync(user, role.Name);
+            // Adicione o usuário à função
+            var result = await _userManager.AddToRoleAsync(user, roleName);
 
             if (result.Succeeded)
             {
@@ -171,20 +199,13 @@ namespace FitFusion.Controllers
             }
         }
 
-
-
-
-
-
-
-
         private UsuarioToken GerarToken(UsuarioDTO usuarioInfo)
         {
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.UniqueName, usuarioInfo.Email),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+            {
+                new Claim(JwtRegisteredClaimNames.UniqueName, usuarioInfo.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]));
 
@@ -201,8 +222,7 @@ namespace FitFusion.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            JwtSecurityToken token = new JwtSecurityToken
-            (
+            JwtSecurityToken token = new JwtSecurityToken(
                 issuer: _configuration["TokenConfiguration:Issuer"],
                 audience: _configuration["TokenConfiguration:Audience"],
                 claims: claims,
@@ -218,7 +238,5 @@ namespace FitFusion.Controllers
                 Message = "Token JWT OK"
             };
         }
-
-
     }
 }

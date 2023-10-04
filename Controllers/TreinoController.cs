@@ -1,4 +1,5 @@
 using FitFusion.Database;
+using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
 using FitFusion.Repositores;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
-{   
+{
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
@@ -57,23 +58,33 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarTreino")]
-        [Authorize(Roles = "Admin")]
-        public async Task<TreinoModel> CriarNovoTreino([FromBody] TreinoModel treino)
+        [Authorize(Roles = "Treinador")]
+        public async Task<ActionResult<TreinoModel>> CriarNovoTreino([FromBody] CriarTreino treinoDto)
         {
             try
             {
-                await _contexto.Treinos.AddAsync(treino);
+                // Crie uma instância de TreinoModel com base nos dados do DTO
+                var treinoModel = new TreinoModel
+                {
+                    Nome = treinoDto.Nome,
+                    Descricao = treinoDto.Descricao,
+                    // Atribua outras propriedades, se necessário
+                };
+
+                // Adicione o treinoModel ao contexto do banco de dados
+                _contexto.Treinos.Add(treinoModel);
                 await _contexto.SaveChangesAsync();
 
-                return treino;
+                // Retorne o treinoModel criado
+                return treinoModel;
             }
             catch (System.Exception)
             {
-
+                // Trate exceções, se necessário
                 throw;
             }
-
         }
+
 
         [HttpPut("Atualizar/{id}")]
         public async Task<ActionResult<TreinoModel>> AtualizarTreino(TreinoModel treinoAtualizado, int id)
@@ -139,13 +150,39 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("Usuarios")]
-        public async Task<ActionResult<IEnumerable<TreinoModel>>> ListarTreinosUsuario()
+        public async Task<ActionResult<IEnumerable<UsuarioTreinosDTO>>> ListarTreinosUsuario()
         {
-            return await _contexto.Treinos.Include(u => u.Usuario).ToListAsync();
+            try
+            {
+                var usuarios = await _contexto.Usuarios
+                    .Include(u => u.Treinos)
+                        .ThenInclude(t => t.Exercicios)
+                    .ToListAsync();
+
+                var usuariosTreinosDTO = usuarios.Select(usuario => new UsuarioTreinosDTO
+                {
+                    UserID = usuario.UserID,
+                    NomeUsuario = usuario.Nome,
+                    Treinos = usuario.Treinos.Select(treino => new TreinoComExercicioDTO
+                    {
+                        TreinoID = treino.TreinoID,
+                        NomeTreino = treino.Nome,
+                        DescricaoTreino = treino.Descricao,
+                        Exercicios = treino.Exercicios.ToList()
+                    }).ToList()
+                }).ToList();
+
+                return usuariosTreinosDTO;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
+
         [HttpGet("Exercicios")]
-        public async Task<ActionResult<IEnumerable<ExerciciosModel>>> ListarExerciciosPorTreino(int treinoId)
+        public async Task<ActionResult<TreinoComExercicioDTO>> ListarExerciciosPorTreino(int treinoId)
         {
             try
             {
@@ -158,14 +195,22 @@ namespace FitFusion.Controllers
                     throw new Exception("Treino não encontrado");
                 }
 
-                var exercicios = treino.Exercicios.ToList();
-                return exercicios;
+                var treinoComExerciciosDTO = new TreinoComExercicioDTO
+                {
+                    TreinoID = treino.TreinoID,
+                    NomeTreino = treino.Nome,
+                    DescricaoTreino = treino.Descricao,
+                    Exercicios = treino.Exercicios.ToList()
+                };
+
+                return treinoComExerciciosDTO;
             }
             catch (System.Exception)
             {
                 throw;
             }
         }
+
 
     }
 }

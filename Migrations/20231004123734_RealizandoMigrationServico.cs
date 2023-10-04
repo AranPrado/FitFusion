@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FitFusion.Migrations
 {
     /// <inheritdoc />
-    public partial class migracaoGitHub : Migration
+    public partial class RealizandoMigrationServico : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,9 +84,7 @@ namespace FitFusion.Migrations
                     Peso = table.Column<float>(type: "float", nullable: false),
                     Idade = table.Column<int>(type: "int", nullable: false),
                     Altura = table.Column<float>(type: "float", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    RoleName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
