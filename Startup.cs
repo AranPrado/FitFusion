@@ -82,7 +82,7 @@ namespace FitFusion
 
 
             services.AddScoped<IExerciciosRepositore, ExerciciosController>();
-            services.AddScoped<ITreinosRepositore, TreinoController>();
+            
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()

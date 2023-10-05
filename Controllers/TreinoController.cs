@@ -12,10 +12,8 @@ namespace FitFusion.Controllers
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
-
-    public class TreinoController : ITreinosRepositore
+    public class TreinoController : ControllerBase
     {
-
         private readonly AppDbContext _contexto;
 
         public TreinoController(AppDbContext contexto)
@@ -24,16 +22,34 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
-        public async Task<IEnumerable<TreinoModel>> ListarTodosTreinos()
+        public async Task<IEnumerable<TreinoComExercicioDTO>> ListarTodosTreinos()
         {
             try
             {
-                return await _contexto.Treinos.ToListAsync();
+                var treinos = await _contexto.Treinos.Include(t => t.Exercicios).ToListAsync();
+
+                if (treinos == null)
+                {
+                    throw new Exception("Nenhum treino encontrado");
+                }
+
+                var treinosComExerciciosDTO = treinos
+                    .Select(
+                        treino =>
+                            new TreinoComExercicioDTO
+                            {
+                                TreinoID = treino.TreinoID,
+                                NomeTreino = treino.Nome,
+                                DescricaoTreino = treino.Descricao,
+                                Exercicios = treino.Exercicios.ToList()
+                            }
+                    )
+                    .ToList();
+
+                return treinosComExerciciosDTO;
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -55,14 +71,15 @@ namespace FitFusion.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
 
         [HttpPost("CriarTreino")]
         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
-        public async Task<ActionResult<TreinoModel>> CriarNovoTreino([FromBody] CriarTreino treinoDto)
+        public async Task<ActionResult<TreinoModel>> CriarNovoTreino(
+            [FromBody] CriarTreino treinoDto
+        )
         {
             try
             {
@@ -88,14 +105,18 @@ namespace FitFusion.Controllers
             }
         }
 
-
         [HttpPut("Atualizar/{id}")]
         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
-        public async Task<ActionResult<TreinoModel>> AtualizarTreino(TreinoModel treinoAtualizado, int id)
+        public async Task<ActionResult<TreinoModel>> AtualizarTreino(
+            TreinoModel treinoAtualizado,
+            int id
+        )
         {
             try
             {
-                var treinoExistente = await _contexto.Treinos.FirstOrDefaultAsync(t => t.TreinoID == id);
+                var treinoExistente = await _contexto.Treinos.FirstOrDefaultAsync(
+                    t => t.TreinoID == id
+                );
 
                 if (treinoExistente == null)
                 {
@@ -123,10 +144,8 @@ namespace FitFusion.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
-
         }
 
         [HttpDelete("Deleta/{id}")]
@@ -135,7 +154,9 @@ namespace FitFusion.Controllers
         {
             try
             {
-                var treinoExistente = await _contexto.Treinos.FirstOrDefaultAsync(t => t.TreinoID == id);
+                var treinoExistente = await _contexto.Treinos.FirstOrDefaultAsync(
+                    t => t.TreinoID == id
+                );
 
                 if (treinoExistente == null)
                 {
@@ -148,10 +169,8 @@ namespace FitFusion.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
-
         }
 
         [HttpGet("Usuarios")]
@@ -162,21 +181,31 @@ namespace FitFusion.Controllers
             {
                 var usuarios = await _contexto.Usuarios
                     .Include(u => u.Treinos)
-                        .ThenInclude(t => t.Exercicios)
+                    .ThenInclude(t => t.Exercicios)
                     .ToListAsync();
 
-                var usuariosTreinosDTO = usuarios.Select(usuario => new UsuarioTreinosDTO
-                {
-                    UserID = usuario.UserID,
-                    NomeUsuario = usuario.Nome,
-                    Treinos = usuario.Treinos.Select(treino => new TreinoComExercicioDTO
-                    {
-                        TreinoID = treino.TreinoID,
-                        NomeTreino = treino.Nome,
-                        DescricaoTreino = treino.Descricao,
-                        Exercicios = treino.Exercicios.ToList()
-                    }).ToList()
-                }).ToList();
+                var usuariosTreinosDTO = usuarios
+                    .Select(
+                        usuario =>
+                            new UsuarioTreinosDTO
+                            {
+                                UserID = usuario.UserID,
+                                NomeUsuario = usuario.Nome,
+                                Treinos = usuario.Treinos
+                                    .Select(
+                                        treino =>
+                                            new TreinoComExercicioDTO
+                                            {
+                                                TreinoID = treino.TreinoID,
+                                                NomeTreino = treino.Nome,
+                                                DescricaoTreino = treino.Descricao,
+                                                Exercicios = treino.Exercicios.ToList()
+                                            }
+                                    )
+                                    .ToList()
+                            }
+                    )
+                    .ToList();
 
                 return usuariosTreinosDTO;
             }
@@ -186,38 +215,57 @@ namespace FitFusion.Controllers
             }
         }
 
-
-        [HttpGet("Exercicios")]
+        [HttpPost("VincularTreinoUsuario")]
         [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
-        public async Task<ActionResult<TreinoComExercicioDTO>> ListarExerciciosPorTreino(int treinoId)
+        public async Task<ActionResult> VincularTreinoUsuario(
+            [FromBody] VincularTreinoUsuarioDTO dadosVinculacao
+        )
         {
             try
             {
-                var treino = await _contexto.Treinos
-                    .Include(t => t.Exercicios) // Carregue os exercícios relacionados com o treino
-                    .FirstOrDefaultAsync(t => t.TreinoID == treinoId);
+                // Verifique se o usuário com o AspNetUserID especificado existe
+                var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(
+                    u => u.AspNetUserID == dadosVinculacao.AspNetUserID
+                );
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                // Verifique se o treino com o TreinoID especificado existe
+                var treino = await _contexto.Treinos.FirstOrDefaultAsync(
+                    t => t.TreinoID == dadosVinculacao.TreinoID
+                );
 
                 if (treino == null)
                 {
-                    throw new Exception("Treino não encontrado");
+                    return NotFound("Treino não encontrado");
                 }
 
-                var treinoComExerciciosDTO = new TreinoComExercicioDTO
+                // Verifique se o usuário já possui o treino vinculado
+                if (usuario.Treinos == null)
                 {
-                    TreinoID = treino.TreinoID,
-                    NomeTreino = treino.Nome,
-                    DescricaoTreino = treino.Descricao,
-                    Exercicios = treino.Exercicios.ToList()
-                };
+                    usuario.Treinos = new List<TreinoModel>(); // Crie uma nova coleção, se for nula
+                }
 
-                return treinoComExerciciosDTO;
+                if (usuario.Treinos.Any(t => t.TreinoID == dadosVinculacao.TreinoID))
+                {
+                    return BadRequest("Este treino já está vinculado ao usuário.");
+                }
+
+                // Vincule o treino ao usuário
+                usuario.Treinos.Add(treino);
+
+                await _contexto.SaveChangesAsync();
+
+                return Ok("Treino vinculado ao usuário com sucesso.");
             }
             catch (System.Exception)
             {
+                // Trate exceções, se necessário
                 throw;
             }
         }
-
-
     }
 }
