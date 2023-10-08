@@ -4,6 +4,7 @@ using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
 using FitFusion.Repositores;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ namespace FitFusion.Controllers
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigin")]
     public class TreinoController : ControllerBase
     {
         private readonly AppDbContext _contexto;

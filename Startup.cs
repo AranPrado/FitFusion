@@ -82,7 +82,7 @@ namespace FitFusion
 
 
             services.AddScoped<IExerciciosRepositore, ExerciciosController>();
-            
+
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -124,7 +124,16 @@ namespace FitFusion
                     };
                 });
 
-
+            // Configuração do CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000") // Defina a origem permitida (substitua com a origem desejada)
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
 
         }
 
@@ -141,6 +150,8 @@ namespace FitFusion
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseAuthentication();
 

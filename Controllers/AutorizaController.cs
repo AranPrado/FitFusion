@@ -7,6 +7,7 @@ using FitFusion.Database;
 using FitFusion.DTOs;
 using FitFusion.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,7 @@ namespace FitFusion.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigin")]
     public class AutorizaController : ControllerBase
     {
         private readonly IMapper _mapper;

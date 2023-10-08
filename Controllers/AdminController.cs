@@ -3,6 +3,7 @@ using FitFusion.DTOs;
 using FitFusion.DTOs.AdminsDTO;
 using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace FitFusion.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigin")]
     public class AdminController : ControllerBase
     {
         private readonly AppDbContext _contexto;
