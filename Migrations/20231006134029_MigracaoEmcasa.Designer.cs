@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitFusion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231004123734_RealizandoMigrationServico")]
-    partial class RealizandoMigrationServico
+    [Migration("20231006134029_MigracaoEmcasa")]
+    partial class MigracaoEmcasa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FitFusion.Migrations
 {
     /// <inheritdoc />
-    public partial class RealizandoMigrationServico : Migration
+    public partial class MigracaoEmcasa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

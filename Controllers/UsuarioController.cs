@@ -3,13 +3,16 @@ using FitFusion.DTOs;
 using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
 
-    [Authorize(AuthenticationSchemes = "Bearer")]
+
+
+
     [Route("api/[controller]")]
     [ApiController]
 
@@ -18,9 +21,12 @@ namespace FitFusion.Controllers
 
         private readonly AppDbContext _contexto;
 
-        public UsuarioController(AppDbContext contexto)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public UsuarioController(AppDbContext contexto, UserManager<IdentityUser> userManager)
         {
             _contexto = contexto;
+            _userManager = userManager;
         }
 
         [HttpGet("InformacoesUsuario/{id}")]
@@ -124,13 +130,31 @@ namespace FitFusion.Controllers
 
             if (usuarioExistente == null)
             {
-                return new NotFoundObjectResult("Usuário não encontrado");
+                return NotFound("Usuário não encontrado");
             }
 
             _contexto.Usuarios.Remove(usuarioExistente);
             await _contexto.SaveChangesAsync();
-            return true;
+
+            // Em seguida, você pode excluir o usuário da tabela AspNetUsers
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return Ok("Usuário excluído com sucesso.");
+                }
+                else
+                {
+                    return BadRequest(result.Errors);
+                }
+            }
+
+            return NotFound("Usuário não encontrado na tabela AspNetUsers");
         }
+
+
 
 
     }

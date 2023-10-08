@@ -132,76 +132,7 @@ namespace FitFusion.Controllers
             }
         }
 
-        [HttpPost("CriarRoles")]
-        [Authorize(Roles = Role.Admin)]
-        public async Task<IActionResult> CriarRoles([FromBody] RoleDTO roleInfo)
-        {
-            if (roleInfo == null || string.IsNullOrEmpty(roleInfo.RoleName))
-            {
-                return BadRequest("Os atributos da função são inválidos.");
-            }
-
-            // Use os valores fornecidos para criar uma nova role
-            var role = new IdentityRole
-            {
-                Name = roleInfo.RoleName,
-                NormalizedName = roleInfo.RoleNormalizedName,
-                ConcurrencyStamp = roleInfo.RoleConcurrencyStamp
-            };
-
-            var resultado = await _roleManager.CreateAsync(role);
-
-            if (resultado.Succeeded)
-            {
-                return Ok("Função criada com sucesso. " + role.Id);
-            }
-            else
-            {
-                return BadRequest(resultado.Errors);
-            }
-        }
-
-        [HttpPost("roleUsuario/{userId}")]
-        [Authorize(Roles = Role.Admin)]
-        public async Task<IActionResult> AdicionarRoleAoUsuario(
-            string userId,
-            [FromBody] RoleIdDTO role
-        )
-        {
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role.RoleNome))
-            {
-                return BadRequest("O ID do usuário e o nome da função são obrigatórios.");
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-            {
-                return BadRequest("Usuário não encontrado.");
-            }
-
-            var roleName = role.RoleNome; // Obtenha o nome da função do DTO
-
-            // Verifique se a função existe
-            var roleExists = await _roleManager.RoleExistsAsync(roleName);
-
-            if (!roleExists)
-            {
-                return BadRequest("Função não encontrada.");
-            }
-
-            // Adicione o usuário à função
-            var result = await _userManager.AddToRoleAsync(user, roleName);
-
-            if (result.Succeeded)
-            {
-                return Ok("Função adicionada ao usuário com sucesso.");
-            }
-            else
-            {
-                return BadRequest(result.Errors);
-            }
-        }
+        
 
         private UsuarioToken GerarToken(UsuarioDTO usuarioInfo)
         {
