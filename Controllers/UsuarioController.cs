@@ -13,7 +13,7 @@ namespace FitFusion.Controllers
 
 
 
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowSpecificOrigin")]

@@ -162,8 +162,8 @@ namespace FitFusion.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Login Inválido....");
-                return BadRequest(ModelState);
+                
+                return BadRequest("Login invalido");
             }
         }
 

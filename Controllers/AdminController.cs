@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowSpecificOrigin")]

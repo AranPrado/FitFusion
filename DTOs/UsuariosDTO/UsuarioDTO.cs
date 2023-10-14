@@ -27,6 +27,7 @@ namespace FitFusion.DTOs
 
         public float Altura { get; set; }
 
+    
         public DateTime DataCriacao { get; set; }
 
         public ICollection<RoleIdDTO> Cargo { get; set; }

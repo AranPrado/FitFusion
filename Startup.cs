@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
+using FitFusion.StartupConfigureToken;
 
 namespace FitFusion
 {
@@ -25,9 +27,7 @@ namespace FitFusion
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             //Configuração DTO//
-
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -35,8 +35,6 @@ namespace FitFusion
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
-
-
 
             //Fim//
 
@@ -48,48 +46,53 @@ namespace FitFusion
                     b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             services.AddControllers();
+            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minha API", Version = "v1" });
+
+                // Configure o esquema de segurança JWT no Swagger
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minha API", Version = "v1" });
-
-                    // Configure o esquema de segurança JWT no Swagger
-                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                    {
-                        Description = "JWT Authorization header using the Bearer scheme",
-                        Name = "Authorization",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.ApiKey
-                    });
-
-                    var securityScheme = new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    };
-                    var securityRequirement = new OpenApiSecurityRequirement
-                    {
-                        { securityScheme, new[] { string.Empty } }
-                    };
-                    c.AddSecurityRequirement(securityRequirement);
+                    Description = "JWT Authorization header using the Bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
                 });
 
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securityScheme, new[] { string.Empty } }
+                };
+                c.AddSecurityRequirement(securityRequirement);
+            });
 
-
-            services.AddScoped<IExerciciosRepositore, ExerciciosController>();
-
+            
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
-                {
-                    options.ClaimsIdentity.RoleClaimType = "role"; 
-                })
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
+            {
+                options.ClaimsIdentity.RoleClaimType = "role"; 
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+            // Adicione a configuração para remover o prefixo "Bearer"
+            services.Configure<RemoveBearerPrefixOptions>(options =>
+            {
+                options.HeaderName = "Authorization"; // O nome padrão do cabeçalho de autorização
+                options.Prefix = "Bearer "; // O prefixo padrão do token JWT
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -137,7 +140,6 @@ namespace FitFusion
                            .AllowAnyMethod();
                 });
             });
-
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
@@ -153,13 +155,9 @@ namespace FitFusion
             }
 
             app.UseHttpsRedirection();
-
             app.UseCors("AllowSpecificOrigin");
-
             app.UseAuthentication();
-
             app.UseAuthorization();
-
             app.MapControllers();
         }
     }

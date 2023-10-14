@@ -1,6 +1,7 @@
 using FitFusion.Constants;
 using FitFusion.Database;
 using FitFusion.DTOs.TreinosDTO;
+using FitFusion.DTOs.UsuariosDTO;
 using FitFusion.Models;
 using FitFusion.Repositores;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowSpecificOrigin")]
@@ -24,6 +25,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<IEnumerable<TreinoComExercicioDTO>> ListarTodosTreinos()
         {
             try
@@ -57,7 +59,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<ActionResult<TreinoModel>> ProcurarTreinoPorId(int id)
         {
             try
@@ -78,7 +80,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarTreino")]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<ActionResult<TreinoModel>> CriarNovoTreino(
             [FromBody] CriarTreino treinoDto
         )
@@ -108,7 +110,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPut("Atualizar/{id}")]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<ActionResult<TreinoModel>> AtualizarTreino(
             TreinoModel treinoAtualizado,
             int id
@@ -151,7 +153,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpDelete("Deleta/{id}")]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<ActionResult<bool>> DeletaTreino(int id)
         {
             try
@@ -176,7 +178,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("Usuarios")]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<ActionResult<IEnumerable<UsuarioTreinosDTO>>> ListarTreinosUsuario()
         {
             try
@@ -218,7 +220,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("VincularTreinoUsuario")]
-        [Authorize(Roles = Role.Treinador + "," + Role.Admin)]
+        [Authorize(Roles = Role.Treinador)]
         public async Task<ActionResult> VincularTreinoUsuario(
             [FromBody] VincularTreinoUsuarioDTO dadosVinculacao
         )
@@ -269,5 +271,42 @@ namespace FitFusion.Controllers
                 throw;
             }
         }
+
+        [HttpDelete("DeletarTreinoUsuario")]
+        [Authorize(Roles = Role.Treinador)]
+        public async Task<ActionResult> DeletarTreinoUsuario([FromBody] DeletarTreinoUsuarioDTO dadosExclusao)
+        {
+            try
+            {
+                // Encontre o usuário com o AspNetUserID especificado
+                var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == dadosExclusao.AspNetUserID);
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                // Verifique se o treino com o TreinoID especificado está vinculado ao usuário
+                var treino = usuario.Treinos.FirstOrDefault(t => t.TreinoID == dadosExclusao.TreinoID);
+
+                if (treino == null)
+                {
+                    return NotFound("Treino não encontrado ou não vinculado ao usuário.");
+                }
+
+                // Desvincule o treino do usuário
+                usuario.Treinos.Remove(treino);
+
+                await _contexto.SaveChangesAsync();
+
+                return Ok("Treino desvinculado do usuário com sucesso.");
+            }
+            catch (System.Exception)
+            {
+                // Trate exceções, se necessário
+                throw;
+            }
+        }
+
     }
 }
