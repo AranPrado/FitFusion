@@ -84,7 +84,10 @@ namespace FitFusion
             services.AddScoped<IExerciciosRepositore, ExerciciosController>();
 
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
+                    options.ClaimsIdentity.RoleClaimType = "role"; 
+                })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 

@@ -1,8 +1,10 @@
+using FitFusion.Constants;
 using FitFusion.Database;
 using FitFusion.DTOs;
 using FitFusion.DTOs.AdminsDTO;
 using FitFusion.DTOs.TreinosDTO;
 using FitFusion.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowSpecificOrigin")]
@@ -29,6 +32,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("RecuperarUsuarios")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<IEnumerable<RecuperarUsuariosDTO>>> RecuperarTodosUsuarios()
         {
             var usuarios = await _contexto.Usuarios.ToListAsync();
@@ -37,6 +41,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("RecuperarUsuarioID/{id}")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<RecuperarUsuariosDTO>> RecuperarUsuarioId(string id)
         {
             var usuarioID = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
@@ -50,6 +55,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPut("AlterarUsuariosID/{id}")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<RecuperarUsuariosDTO>> AlterarUsuarioId([FromBody] RecuperarUsuariosDTO usuario, string id)
         {
             var usuarioID = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
@@ -72,6 +78,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpDelete("DeletarUsuarioID/{id}")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<RecuperarUsuariosDTO>> DeletarUsuario(string id)
         {
             var usuarioID = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.AspNetUserID == id);
@@ -87,6 +94,7 @@ namespace FitFusion.Controllers
         /////////////////////////////////////////////////////////////////////////
 
         [HttpGet("RecuperarTreinos")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<IEnumerable<RecuperarTreinosDTO>>> RecuperarTodosTreinos()
         {
             var treinos = await _contexto.Treinos.ToListAsync();
@@ -95,6 +103,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("RecuperarTreinoID/{id}")]
+        [Authorize(Roles = Role.Admin)]
 
         public async Task<ActionResult<TreinoModel>> ProcurarTreinoPorId(int id)
         {
@@ -116,6 +125,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarTreino")]
+        [Authorize(Roles = Role.Admin)]
 
         public async Task<ActionResult<TreinoModel>> CriarNovoTreino(
             [FromBody] CriarTreino treinoDto
@@ -146,6 +156,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPut("AtualizarTreino/{id}")]
+        [Authorize(Roles = Role.Admin)]
 
         public async Task<ActionResult<TreinoModel>> AtualizarTreino(
             TreinoModel treinoAtualizado,
@@ -189,6 +200,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpDelete("DeletaTreino/{id}")]
+        [Authorize(Roles = Role.Admin)]
 
         public async Task<ActionResult<bool>> DeletaTreino(int id)
         {
@@ -216,6 +228,7 @@ namespace FitFusion.Controllers
         /////////////////////////////////////////////////////////////////////////
 
         [HttpGet("RecuperarExercicios")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<IEnumerable<RecuperarExerciciosDTO>>> RecuperarTodosExercicios()
         {
             var exercicios = await _contexto.Exercicios.ToListAsync();
@@ -224,7 +237,8 @@ namespace FitFusion.Controllers
         }
 
         [HttpGet("RecuperarExercicioID/{id}")]
-        
+        [Authorize(Roles = Role.Admin)]
+
         public async Task<ActionResult<ExerciciosModel>> ProcurarExercicioPorId(int id)
         {
             try
@@ -246,7 +260,8 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("CriarExercicio")]
-        
+        [Authorize(Roles = Role.Admin)]
+
         public async Task<ExerciciosModel> CriarNovoExercicio([FromBody] ExerciciosModel exercicio)
         {
             try
@@ -264,7 +279,8 @@ namespace FitFusion.Controllers
         }
 
         [HttpPut("AtualizarExercicio/{id}")]
-        
+        [Authorize(Roles = Role.Admin)]
+
         public async Task<ActionResult<ExerciciosModel>> AtualizarExercicio(ExerciciosModel exercicioAtualizado, int id)
         {
             try
@@ -330,7 +346,8 @@ namespace FitFusion.Controllers
 
 
         [HttpDelete("DeletaExercicio/{id}")]
-        
+        [Authorize(Roles = Role.Admin)]
+
         public async Task<ActionResult<bool>> DeletaExercicio(int id)
         {
             try
@@ -356,6 +373,7 @@ namespace FitFusion.Controllers
         /////////////////////////////////////////////////////////////////////////
 
         [HttpPost("CriarRoles")]
+        
         public async Task<IActionResult> CriarRoles([FromBody] RoleDTO roleInfo)
         {
             if (roleInfo == null || string.IsNullOrEmpty(roleInfo.RoleName))
@@ -384,6 +402,7 @@ namespace FitFusion.Controllers
         }
 
         [HttpPost("roleUsuario/{userId}")]
+        
         public async Task<IActionResult> AdicionarRoleAoUsuario(
             string userId,
             [FromBody] RoleIdDTO role

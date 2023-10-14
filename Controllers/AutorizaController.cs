@@ -5,6 +5,7 @@ using AutoMapper;
 using FitFusion.Constants;
 using FitFusion.Database;
 using FitFusion.DTOs;
+using FitFusion.DTOs.RecuperarSenhaDTO;
 using FitFusion.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -71,6 +72,33 @@ namespace FitFusion.Controllers
 
             if (result.Succeeded)
             {
+                if (model.Cargo != null && model.Cargo.Any())
+                {
+                    foreach (var role in model.Cargo)
+                    {
+                        // Verifique se a função escolhida é válida
+                        if (await _roleManager.RoleExistsAsync(role.RoleNome))
+                        {
+                            // Se a função não for "Admin", adicione o usuário a essa função
+                            if (role.RoleNome != Role.Admin)
+                            {
+                                await _userManager.AddToRoleAsync(user, role.RoleNome);
+                            }
+                            else
+                            {
+                                // Aviso: Não permita que um usuário seja cadastrado como "Admin" aqui
+                                await _userManager.DeleteAsync(user); // Exclui o usuário se a função for "Admin"
+                                return BadRequest("Você não pode se registrar como um 'Admin'.");
+                            }
+                        }
+                        else
+                        {
+                            await _userManager.DeleteAsync(user); // Exclui o usuário se a função não existe
+                            return BadRequest($"A função '{role.RoleNome}' não é válida.");
+                        }
+                    }
+                }
+
                 var usuarioModel = _mapper.Map<UsuarioModel>(model);
 
                 var aspNetUserId = user.Id;
@@ -80,13 +108,18 @@ namespace FitFusion.Controllers
                 await _contexto.SaveChangesAsync();
 
                 await _signInManager.SignInAsync(user, false);
-                return Ok(GerarToken(model));
+                return Ok("Usuário cadastrado com sucesso");
             }
             else
             {
+                await _userManager.DeleteAsync(user); // Exclui o usuário se ocorrerem erros
                 return BadRequest(result.Errors);
             }
         }
+
+
+
+
 
         [HttpPost("Login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginInfo)
@@ -134,7 +167,41 @@ namespace FitFusion.Controllers
             }
         }
 
+
+        [HttpPost("RedefinirSenha")]
         
+        public async Task<ActionResult> RedefinirSenha([FromBody] RedefinirSenhaDTO model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                // Trate o caso em que o usuário não foi encontrado
+                return BadRequest("Usuário não encontrado.");
+            }
+
+            // Redefina a senha usando a nova senha fornecida
+            var result = await _userManager.RemovePasswordAsync(user);
+            if (result.Succeeded)
+            {
+                result = await _userManager.AddPasswordAsync(user, model.NovaSenha);
+                if (result.Succeeded)
+                {
+                    // Trate o caso em que a redefinição de senha foi bem-sucedida
+                    return Ok("Senha redefinida com sucesso.");
+                }
+            }
+
+            // Trate o caso em que a redefinição de senha falhou
+            return BadRequest("Erro na atualização da senha: " + string.Join(", ", result.Errors));
+        }
+
+
+
+
+
+
+
+
 
         private UsuarioToken GerarToken(UsuarioDTO usuarioInfo)
         {

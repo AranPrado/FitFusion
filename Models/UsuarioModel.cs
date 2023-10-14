@@ -19,6 +19,9 @@ namespace FitFusion.Models
         [MaxLength(150)]
         public string Nome { get; set; }
 
+        [MaxLength(150)]
+        public string? SobreNome {get; set;}
+
         [Required]
         public string Email { get; set; }
 

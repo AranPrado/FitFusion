@@ -12,6 +12,8 @@ namespace FitFusion.DTOs
 
         public string Nome { get; set; }
 
+        public string? SobreNome { get; set; }
+
         public string Email { get; set; }
 
         public string Senha { get; set; }
@@ -25,10 +27,14 @@ namespace FitFusion.DTOs
 
         public float Altura { get; set; }
 
+        public DateTime DataCriacao { get; set; }
+
+        public ICollection<RoleIdDTO> Cargo { get; set; }
+
         [JsonIgnore]
         public ICollection<TreinoModel>? Treinos { get; set; }
 
-        
+
 
     }
 }
