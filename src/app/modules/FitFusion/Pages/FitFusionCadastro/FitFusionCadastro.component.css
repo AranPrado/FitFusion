@@ -1,0 +1,196 @@
+input, select {
+  padding: 10px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.containerDireita {
+  background-color: var(--blackColor);
+  width: 40%;
+  text-align: center;
+}
+
+.tituloSlider {
+  margin-top: 80px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  font-size: 48px;
+  font-family: "Bebas Neue";
+  color: var(--whiteColor);
+}
+
+.containerEsquerda {
+  background-color: var(--primaryColor);
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tituloForm {
+  font-size: 35px;
+  font-weight: bold;
+  font-family: "Roboto";
+  margin-bottom: 35px;
+  color: var(--whiteColor);
+}
+
+.Inputs{
+  margin-bottom: 20px;
+}
+
+.titulosInputs {
+  font-family: "Roboto";
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--whiteColor);
+  margin-bottom: 5px;
+}
+
+.inputsForms {
+  width: 400px;
+  height: 60px;
+  border-radius: 5px;
+  border: 0;
+  box-shadow: 8px, 8px, 8px, var(--blackColor);
+  background-color: var(--whiteColor);
+}
+
+.inputsForms:focus {
+  outline: 1px solid #0c494b;
+  padding-left: 10px;
+}
+
+.inputsForms::placeholder {
+  padding-right: 10px;
+}
+
+.botaoContainer {
+  display: flex;
+  
+  width: 400px;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.botaoFinalizar {
+  width: 150px;
+  height: 60px;
+  border-radius: 10px;
+
+  border: 0px;
+  cursor: pointer;
+  background-color: #01AB7A;
+  transition: 1.5s;
+}
+
+.botaoFinalizar:hover {
+  background-color: #02da9c;
+}
+
+.textoBotaoProximo,
+.textoVoltarBotao {
+  font-family: "Roboto";
+  font-size: 20px;
+  font-weight: light;
+  color: var(--whiteColor);
+
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.voltarBotao {
+  width: 110px;
+  height: 60px;
+  border-radius: 10px;
+  border: 1px solid #0A3739;
+  cursor: pointer;
+  background-color: #0A3739;
+  
+  transition: 1.5s;
+}
+
+.voltarBotao:hover {
+  background-color: #042f31;
+  border: 1px solid #fff;
+}
+
+.imagemContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+}
+
+.img {
+  width: 370px;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 14px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.legendaContainer {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.legenda {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto";
+  color: var(--whiteColor);
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: lighter;
+  margin-bottom: 0px;
+}
+
+.select{
+  width: 400px;
+  height: 60px;
+  border-radius: 5px;
+  border: 0;
+  box-shadow: 8px 8px 8px var(--blackColor);
+  background-color: var(--whiteColor);
+  padding: 10px; 
+  font-family: "Roboto";
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--blackColor); 
+  outline: none;
+}
+
+option {
+  font-family: "Roboto";
+  font-size: 15px; 
+  
+  color: var(--blackColor); 
+  background-color: var(--whiteColor); 
+}
+
+.options:hover {
+  background-color: #0c494b; 
+  
+}

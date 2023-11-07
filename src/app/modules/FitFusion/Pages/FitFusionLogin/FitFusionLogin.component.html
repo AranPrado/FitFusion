@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="containerDireita">
+    <p class="tituloSlider">FitFusion</p>
+    <div class="imagemContainer">
+      <div src="" class="imagemContainer" alt="">
+        <img class="img" src="../../../../../assets/imagemTreino.png" alt="" />
+      </div>
+    </div>
+    <div class="legendaContainer">
+      <p class="legenda">{{ frases[fraseAtual] }}</p>
+    </div>
+  </div>
+  <div class="containerEsquerda">
+    <div class="tituloForm">
+      <p>Faça seu login</p>
+    </div>
+    <form (ngSubmit)="login()">
+      <div class="formContainer">
+        <div class="primeiroInput">
+          <p class="titulosInputs">Email</p>
+          <input
+            [(ngModel)]="novoLogin.email"
+            name="email"
+            class="inputsForms"
+            type="email"
+            placeholder="nome@dominio.com"
+          />
+        </div>
+        <div class="segundoInput">
+          <p class="titulosInputs">Senha</p>
+          <input
+            [(ngModel)]="novoLogin.senha"
+            name="senha"
+            class="inputsForms"
+            type="password"
+            placeholder="Digite sua senha"
+          />
+        </div>
+        <div class="recuperarSenha">
+          <a href="" class="linkRecuperarSenha">
+            <p class="textRecuperarSenha">Recuperar Senha</p>
+          </a>
+        </div>
+        <div class="botaoContainer">
+          <div>
+            <button class="botaoUm" type="button" (click)="login()">
+              <p class="textoButtonEntrar">Entrar</p>
+            </button>
+          </div>
+          <div class="textLogin">
+            <div class="textAndLine">
+              <hr class="line" />
+              <p class="text">OU</p>
+              <hr class="line" />
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </form>
+    <div class="botaoDois">
+      <a routerLink="/registro">
+        <button class="cadastrarBotao">
+          <p class="textoCadastrarBotao">Comece sua Jornada Fitness</p>
+        </button>
+      </a>
+    </div>
+    
+  </div>
+</div>

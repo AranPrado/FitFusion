@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="containerDireita">
+    <p class="tituloSlider">FitFusion</p>
+    <div class="imagemContainer">
+      <div src="" class="imagemContainer" alt="">
+        <img class="img" src="../../../../../assets/imagemTreino.png" alt="" />
+      </div>
+    </div>
+    <div class="legendaContainer">
+      <p class="legenda">{{ frases[fraseAtual] }}</p>
+    </div>
+  </div>
+  <div class="containerEsquerda">
+    <div class="tituloForm">
+      <p>{{etapaCadastro === 1 ? 'Crie sua conta' : 'Preenchar suas informações'}}</p>
+    </div>
+    <form>
+      <div class="formContainer">
+        <!--Etapa 1-->
+        <div *ngIf="etapaCadastro === 1">
+          <div class="Inputs">
+            <p class="titulosInputs">Nome</p>
+            <input
+              name="nome"
+              class="inputsForms"
+              type="text"
+              [(ngModel)]="novoRegistro.nome"
+              placeholder="Digite seu nome"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Sobrenome</p>
+            <input
+              name="sobrenome"
+              class="inputsForms"
+              type="text"
+              [(ngModel)]="novoRegistro.sobreNome"
+              placeholder="Digite seu sobrenome"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Email</p>
+            <input
+              name="email"
+              class="inputsForms"
+              [(ngModel)]="novoRegistro.email"
+              type="email"
+              placeholder="nome@dominio.com"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Senha</p>
+            <input
+              name="senha"
+              [(ngModel)]="novoRegistro.senha"
+              class="inputsForms"
+              type="password"
+              placeholder="Digite sua senha"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Confirmar senha</p>
+            <input
+              name="confirmarSenha"
+              class="inputsForms"
+              [(ngModel)]="novoRegistro.confirmarSenha"
+              type="password"
+              placeholder="Digite sua senha novamente"
+            />
+          </div>
+        </div>
+        <!--Fim etapa 1-->
+
+        <!--Etapa 2-->
+        <div *ngIf="etapaCadastro === 2">
+          <div class="Inputs">
+            <p class="titulosInputs">Peso</p>
+            <input
+              name="peso"
+              [(ngModel)]="novoRegistro.peso"
+              class="inputsForms"
+              type="number"
+              placeholder="Digite seu peso Ex: 85.2"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Altura</p>
+            <input
+              name="altura"
+              [(ngModel)]="novoRegistro.altura"
+              class="inputsForms"
+              type="number"
+              placeholder="Digite sua altura Ex: 1.85"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Idade</p>
+            <input
+              name="idade"
+              [(ngModel)]="novoRegistro.idade"
+              class="inputsForms"
+              type="number"
+              placeholder="Digite sua idade"
+            />
+          </div>
+          <div class="Inputs">
+            <p class="titulosInputs">Voce deseja ser:</p>
+            <select class="select" name="roleNome" class="inputsForms" [(ngModel)]="novoRegistro.roleNome">
+              <option class="options" value="usuario">Usuário</option>
+              <option class="options" value="treinador">Treinador</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="botaoContainer">
+      <div class="botaoDois">
+        <a (click)="onVoltarClick()">
+          <button class="voltarBotao">
+            <p class="textoVoltarBotao">Voltar</p>
+          </button>
+        </a>
+      </div>
+
+      <div>
+        <button class="botaoFinalizar" type="button" (click)="onProximoClick()">
+          <p class="textoBotaoProximo">{{ etapaCadastro === 1 ? 'Próximo' : 'Registrar' }}</p>
+        </button>        
+      </div>
+    </div>
+  </div>
+</div>
