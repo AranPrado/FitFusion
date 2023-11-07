@@ -46,7 +46,7 @@ namespace FitFusion
                     b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             services.AddControllers();
-            
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
 
@@ -78,11 +78,11 @@ namespace FitFusion
                 c.AddSecurityRequirement(securityRequirement);
             });
 
-            
+
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
-                options.ClaimsIdentity.RoleClaimType = "role"; 
+                options.ClaimsIdentity.RoleClaimType = "role";
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
@@ -132,14 +132,16 @@ namespace FitFusion
 
             // Configuração do CORS
             services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigin", builder =>
-                {
-                    builder.WithOrigins("http://localhost:3000") // Defina a origem permitida (substitua com a origem desejada)
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
-            });
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
@@ -155,7 +157,7 @@ namespace FitFusion
             }
 
             app.UseHttpsRedirection();
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

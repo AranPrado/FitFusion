@@ -38,6 +38,7 @@ namespace FitFusion.Models
 
         //Usuario para treino
 
+        public string RoleNome { get; set; }
 
         public ICollection<TreinoModel> Treinos { get; set; }
 

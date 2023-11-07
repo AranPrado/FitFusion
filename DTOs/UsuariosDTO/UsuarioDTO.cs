@@ -30,7 +30,7 @@ namespace FitFusion.DTOs
     
         public DateTime DataCriacao { get; set; }
 
-        public ICollection<RoleIdDTO> Cargo { get; set; }
+        public string RoleNome { get; set; } 
 
         [JsonIgnore]
         public ICollection<TreinoModel>? Treinos { get; set; }

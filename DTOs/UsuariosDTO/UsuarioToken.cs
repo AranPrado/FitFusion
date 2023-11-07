@@ -11,5 +11,7 @@ namespace FitFusion.DTOs
         public string Message { get; set; }
 
         public string AspNetUserID { get; set; }
+
+        
     }
 }

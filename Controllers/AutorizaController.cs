@@ -17,7 +17,7 @@ namespace FitFusion.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowSpecificOrigin")]
+
     public class AutorizaController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -72,30 +72,27 @@ namespace FitFusion.Controllers
 
             if (result.Succeeded)
             {
-                if (model.Cargo != null && model.Cargo.Any())
+                if (!string.IsNullOrWhiteSpace(model.RoleNome))
                 {
-                    foreach (var role in model.Cargo)
+                    // Verifique se a função escolhida é válida
+                    if (await _roleManager.RoleExistsAsync(model.RoleNome))
                     {
-                        // Verifique se a função escolhida é válida
-                        if (await _roleManager.RoleExistsAsync(role.RoleNome))
+                        // Se a função não for "Admin", adicione o usuário a essa função
+                        if (model.RoleNome != Role.Admin)
                         {
-                            // Se a função não for "Admin", adicione o usuário a essa função
-                            if (role.RoleNome != Role.Admin)
-                            {
-                                await _userManager.AddToRoleAsync(user, role.RoleNome);
-                            }
-                            else
-                            {
-                                // Aviso: Não permita que um usuário seja cadastrado como "Admin" aqui
-                                await _userManager.DeleteAsync(user); // Exclui o usuário se a função for "Admin"
-                                return BadRequest("Você não pode se registrar como um 'Admin'.");
-                            }
+                            await _userManager.AddToRoleAsync(user, model.RoleNome);
                         }
                         else
                         {
-                            await _userManager.DeleteAsync(user); // Exclui o usuário se a função não existe
-                            return BadRequest($"A função '{role.RoleNome}' não é válida.");
+                            // Aviso: Não permita que um usuário seja cadastrado como "Admin" aqui
+                            await _userManager.DeleteAsync(user); // Exclui o usuário se a função for "Admin"
+                            return BadRequest("Você não pode se registrar como um 'Admin'.");
                         }
+                    }
+                    else
+                    {
+                        await _userManager.DeleteAsync(user); // Exclui o usuário se a função não existe
+                        return BadRequest($"A função '{model.RoleNome}' não é válida.");
                     }
                 }
 
@@ -108,7 +105,8 @@ namespace FitFusion.Controllers
                 await _contexto.SaveChangesAsync();
 
                 await _signInManager.SignInAsync(user, false);
-                return Ok("Usuário cadastrado com sucesso");
+                return Ok(new { message = "Usuário cadastrado com sucesso" });
+
             }
             else
             {
@@ -149,7 +147,8 @@ namespace FitFusion.Controllers
                         Expiration = token.Expiration,
                         Token = token.Token,
                         Message = token.Message,
-                        AspNetUserID = user.Id // Defina o AspNetUserID aqui
+                        AspNetUserID = user.Id,
+                      
                     };
 
                     return Ok(usuarioToken);
@@ -162,14 +161,14 @@ namespace FitFusion.Controllers
             }
             else
             {
-                
+
                 return BadRequest("Login invalido");
             }
         }
 
 
         [HttpPost("RedefinirSenha")]
-        
+
         public async Task<ActionResult> RedefinirSenha([FromBody] RedefinirSenhaDTO model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);

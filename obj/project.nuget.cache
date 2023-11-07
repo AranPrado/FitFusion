@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lXDd8qub6wKWjZZRSLhNyvy5xKADOS6J8d3NP47ntf+teBCCipkN7nj3fCsEizokQOp0WwbEKen9SwWlJkByVg==",
+  "dgSpecHash": "tWEdjBk7Sh/kSmx3/2nSjStYZLYd0zBGoxYhix2smvUv2/cfDDxYi3CeIfxMFAmH4AEQJ6NFOm35wVc8oAYSIQ==",
   "success": true,
-  "projectFilePath": "/home/aran/Desktop/FitFusion/FitFusion.csproj",
+  "projectFilePath": "/home/aran/Desktop/FitFusionFullStack/FitFusion-Back/FitFusion.csproj",
   "expectedPackageFiles": [
     "/home/aran/.nuget/packages/automapper/10.1.1/automapper.10.1.1.nupkg.sha512",
     "/home/aran/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/8.1.0/automapper.extensions.microsoft.dependencyinjection.8.1.0.nupkg.sha512",
