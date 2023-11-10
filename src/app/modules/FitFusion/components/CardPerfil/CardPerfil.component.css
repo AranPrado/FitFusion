@@ -1,0 +1,39 @@
+.container{
+    width: 350px;
+    height: 200px;
+    background-color: green;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nomeContainer{
+    margin-top: 50px;
+}
+
+.nome{
+    font-size: 28px;
+}
+
+.cargo{
+    font-size: 12px;
+}
+
+.tabela{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.tabela{
+    margin: 5px;
+    width: 100%;
+    background-color: yellow;
+}
+
+.informacoes{
+    background-color: blue;
+}

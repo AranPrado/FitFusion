@@ -1,0 +1,44 @@
+.container{
+    background-color: #03C988;
+    width: 234px;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 4px 8px 4px #0000004f;
+    margin: 10px;
+}
+
+.titulo{
+   padding-top: 30px;
+   font-family: 'Roboto';
+   font-size: 25px;
+   font-weight: 500;
+   color: var(--whiteColor);
+}
+
+.iconContainer{
+    padding-top: 30px;
+    font-size: 80px;
+    color: var(--whiteColor);
+}
+
+.botaoContainer{
+    margin-top: 30px;
+    background-color: var(--whiteColor);
+    width: 90%;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    color: var(--blackColor);
+    transition: .75s;
+}
+
+.botaoContainer:hover{
+    background-color: #eeeeee;
+    
+}
