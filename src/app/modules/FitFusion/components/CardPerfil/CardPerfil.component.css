@@ -1,39 +1,68 @@
 .container{
     width: 350px;
     height: 200px;
-    background-color: green;
+    background-color: #006D72;
     display: flex;
     align-items: center;
     flex-direction: column;
+    border-radius: 10px;
 }
 
 .nomeContainer{
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .nome{
     font-size: 28px;
+    font-weight: 500;
+    font-family: 'Roboto';
+    color: var(--whiteColor);
 }
 
 .cargo{
     font-size: 12px;
+    font-weight: 100;
+    color: #D3D3D3;
 }
 
-.tabela{
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-}
 
-.tabela{
-    margin: 5px;
+
+
+.containerInfor{
+   
     width: 100%;
-    background-color: yellow;
+    text-align: center;
+}
+
+.informacoesContainer{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+   
+}
+
+.dadosContainer{
+    display: flex;
+    justify-content: space-around;
+   margin-top: 10px;
+   color: var(--whiteColor);
+}
+
+.informacoes, .dados{
+   
+    width: 100px;
 }
 
 .informacoes{
-    background-color: blue;
+    font-family: 'Roboto';
+    font-weight: lighter;
+    font-size: 16px;
+    color: #D3D3D3;
+}
+
+.dados{
+    font-family: 'Roboto';
+    font-weight: bold;
+    font-size: 17px;
+
 }
