@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-CardPerfil',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CardPerfilComponent implements OnInit {
 
+  @Input() NomeUsuario: string = '';
+  @Input() CargoUsuario: string = '';
+  @Input() PesoUsuario: any = '';
+  @Input() AlturaUsuario: any = '';
+  @Input() IdadeUsuario: any = '';
+
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }
