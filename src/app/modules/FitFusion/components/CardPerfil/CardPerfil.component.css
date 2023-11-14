@@ -1,15 +1,17 @@
 .container{
     width: 350px;
-    height: 200px;
+    height: 280px;
     background-color: #006D72;
     display: flex;
     align-items: center;
     flex-direction: column;
     border-radius: 10px;
+    margin: 10px;
+    box-shadow: 4px 6px 4px rgba(0, 0, 0, 0.329);
 }
 
 .nomeContainer{
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 .nome{
@@ -37,7 +39,7 @@
 .informacoesContainer{
     display: flex;
     justify-content: space-around;
-    margin-top: 15px;
+    margin-top: 70px;
    
 }
 

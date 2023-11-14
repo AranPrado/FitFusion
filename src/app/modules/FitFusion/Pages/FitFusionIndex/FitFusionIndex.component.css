@@ -3,13 +3,13 @@ a {
   }
   .container {
     display: flex;
-    background-color: red;
+   
     width: 100%;
     height: 100%;
   }
   
   .icons {
-    font-size: 2em;
+    font-size: 2.5em;
     color: var(--whiteColor);
   }
   
@@ -32,7 +32,7 @@ a {
   }
   
   .perfilIcon {
-    font-size: 2.2em;
+    font-size: 2.8em;
   }
   .perfilIcon:hover {
     color: #e1e0e0;
@@ -49,7 +49,7 @@ a {
   
   .containerNavBar {
     background-color: #0b666a;
-    width: 70%;
+    width: 60%;
     height: 90%;
     border-radius: 20px;
   }
@@ -58,7 +58,7 @@ a {
     height: 15%;
     display: flex;
     justify-content: center;
-    font-size: 30px;
+    font-size: 40px;
     align-items: center;
     font-family: "Bebas Neue";
     font-weight: bold;
@@ -108,11 +108,27 @@ a {
   
   .titulo{
     margin-left: 30px;
-    font-size: 27px;
+    margin-top: 50px;
+    font-size: 35px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
   }
 
   .cardsUm{
     display: flex;
+    margin-top: 5%;
+  }
+
+  .cardNoticias{
+    margin: 0px 15% 0px 30px;
+  }
+
+  .cardPerfil{
+    margin-top: 10px;
+  }
+
+  .cardsDois{
+    display: flex;
+    justify-content: center;
+    margin-top: 15%;
   }

@@ -1,0 +1,48 @@
+.container{
+    width: 700px;
+    height: 300px;
+    background-color: #03C988;
+    border-radius: 10px;
+    display: flex;
+    margin: 10px;
+    box-shadow: 4px 6px 4px rgba(0, 0, 0, 0.329);
+}
+
+.TextosContainer{
+    margin-top: 70px;
+    margin-left: 30px;
+    width: 80%;
+    
+}
+
+.Titulo{
+    font-size: 35px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: lighter;
+    color: var(--whiteColor);
+    letter-spacing: 2px;
+}
+
+.TextoContainer{
+    
+    margin-top: 50px;
+}
+
+.Texto{
+    color: #fff;
+    font-size: 15px;
+    font-weight: lighter;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.ImagemContainer{
+    margin-right: 20px;
+    
+}
+
+.ImagemContainer img{
+    width: 100%;
+    height: auto;
+    margin-top: -80px;
+    
+}
