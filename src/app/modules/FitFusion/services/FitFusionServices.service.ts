@@ -28,8 +28,7 @@ registro(registroModel: RegistroModel){
 private getAuthorizedHeaders(): HttpHeaders {
   const token = localStorage.getItem('token');
   return new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `${token}`
+    'Authorization': `Bearer ${token}`
   });
 }
 
