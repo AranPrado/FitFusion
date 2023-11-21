@@ -1,10 +1,10 @@
 <div class="container">
   
   <div class="nomeContainer">
-    <p class="nome">{{NomeUsuario}}</p>
+    <p class="nome">{{perfilModel?.nome}}</p>
   </div>
   <div class="cargoContainer">
-    <p class="cargo">{{CargoUsuario}}</p>
+    <p class="cargo">{{perfilModel?.roleNome}}</p>
   </div>
  
   <div class="containerInfor">
@@ -14,9 +14,11 @@
       <div class="informacoes">Idade</div>
     </div>
     <div class="dadosContainer">
-      <div class="dados">{{PesoUsuario}}kg</div>
-      <div class="dados">{{AlturaUsuario}}m</div>
-      <div class="dados">{{IdadeUsuario}}</div>
+      <div class="dados">{{perfilModel?.peso}}kg</div>
+      <div class="dados">{{formatarAltura(perfilModel?.altura)}}m</div>
+
+
+      <div class="dados">{{perfilModel?.idade}}</div>
     </div>
   </div>
   

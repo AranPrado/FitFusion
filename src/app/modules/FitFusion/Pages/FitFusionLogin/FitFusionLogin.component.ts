@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { AuthResponse, LoginModel } from '../../models/LoginModel.model';
+
 import { FitFusionServicesService } from '../../services/FitFusionServices.service';
 import { FitFusionLoginModule } from './FitFusionLogin-module';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { Router } from '@angular/router';
+import { LoginModel } from '../../models/Models.model';
+
 
 
 
@@ -29,15 +31,21 @@ export class FitFusionLoginComponent implements OnInit {
     email: '',
     senha: ''
   };
+  userId: string | null | undefined;
 
-  constructor(private fitFusionService: FitFusionServicesService,private router: Router) { }
+  constructor(private fitFusionService: FitFusionServicesService,private router: Router) {
+    
+   }
 
   login():void{
     this.fitFusionService.login(this.novoLogin).subscribe((res: any) => {
      
+      
 
       localStorage.setItem('token', res.token);
       localStorage.setItem('userId', res.aspNetUserID);
+
+      
       
       this.router.navigate(['/index']);
     },
@@ -48,6 +56,7 @@ export class FitFusionLoginComponent implements OnInit {
     setInterval(() => {
       this.atualizarFrase();
     }, 8000);
+    this.userId = localStorage.getItem('userId');
   }
 
   

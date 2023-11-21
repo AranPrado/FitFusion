@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FitFusionCadastroModule } from './FitFusionCadastro-module';
 import { Router } from '@angular/router';
-import { RegistroModel } from '../../models/LoginModel.model';
+import { RegistroModel } from '../../models/Models.model';
 import { FitFusionServicesService } from '../../services/FitFusionServices.service';
 
 

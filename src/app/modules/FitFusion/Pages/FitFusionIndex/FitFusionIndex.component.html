@@ -1,5 +1,6 @@
 <div class="container">
   <div class="ladoEsquerdo">
+    <i class="ph-light ph-sign-out iconLogout" (click)="logout()"></i>
     <div class="containerNavBar">
       <nav class="containerNav">
         <a href=""><p class="navTitulo">FF</p></a>
@@ -24,6 +25,7 @@
         </a>
       </nav>
     </div>
+    
   </div>
   <div class="ladoDireito">
     <div class="containerDireito">
@@ -33,18 +35,20 @@
         </div>
       </div>
       <div class="cardsUm">
-       <div class="cardNoticias">
-        <app-CardNoticias></app-CardNoticias>
-       </div>
-       
-       <div class="cardPerfil">
-        <app-CardPerfil AlturaUsuario="1.90" CargoUsuario="Usuario" NomeUsuario="Aran"
-         IdadeUsuario="20" PesoUsuario="80"></app-CardPerfil>
-       </div>
+        <div class="cardNoticias">
+          <app-CardNoticias></app-CardNoticias>
+        </div>
+
+        <div class="cardPerfil">
+          <app-CardPerfil></app-CardPerfil>
+        </div>
       </div>
       <div class="cardsDois">
         <app-Card emoji="barbell" titulo="Meus Treinos"></app-Card>
-        <app-Card emoji="person-simple-bike" titulo="Meus Exercícios"></app-Card>
+        <app-Card
+          emoji="person-simple-bike"
+          titulo="Meus Exercícios"
+        ></app-Card>
         <app-Card emoji="users" titulo="Meus Alunos"></app-Card>
       </div>
     </div>

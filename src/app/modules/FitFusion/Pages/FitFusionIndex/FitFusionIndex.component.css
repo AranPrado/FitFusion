@@ -132,3 +132,12 @@ a {
     justify-content: center;
     margin-top: 15%;
   }
+
+  .iconLogout{
+    font-size: 2.5em;
+    color: var(--blackColor);
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    cursor: pointer;
+  }

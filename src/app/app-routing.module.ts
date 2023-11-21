@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FitFusionLoginComponent } from './modules/FitFusion/Pages/FitFusionLogin/FitFusionLogin.component';
 import { FitFusionCadastroComponent } from './modules/FitFusion/Pages/FitFusionCadastro/FitFusionCadastro.component';
 import { FitFusionIndexComponent } from './modules/FitFusion/Pages/FitFusionIndex/FitFusionIndex.component';
+import { AuthGuard } from './modules/FitFusion/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
   },
   {
     path: 'index',
-    component: FitFusionIndexComponent
+    component: FitFusionIndexComponent,
+    canActivate: [AuthGuard]
   }
 ];
 
