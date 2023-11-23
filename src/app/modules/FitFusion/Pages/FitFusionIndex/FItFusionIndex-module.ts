@@ -6,12 +6,14 @@ import { CardPerfilComponent } from "../../components/CardPerfil/CardPerfil.comp
 import { CardNoticiasComponent } from "../../components/CardNoticias/CardNoticias.component";
 import { FitFusionServicesService } from "../../services/FitFusionServices.service";
 import { NavBarComponent } from "../../components/NavBar/NavBar.component";
+import { NavBarModule } from "../../components/NavBar/NavBar-module";
+
 
 
 
 @NgModule({
-    declarations: [CardComponent,FitFusionIndexComponent,CardPerfilComponent, CardNoticiasComponent,NavBarComponent],
-    imports: [RouterModule],
+    declarations: [CardComponent,FitFusionIndexComponent,CardPerfilComponent, CardNoticiasComponent],
+    imports: [RouterModule,NavBarModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers:[FitFusionServicesService]
 })

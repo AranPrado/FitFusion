@@ -2,17 +2,8 @@
   <nav class="containerNav">
     <a href=""><p class="navTitulo">FF</p></a>
     <ol class="listContainer">
-      <li>
-        <a href=""><i class="ph-light ph-house icons"></i></a>
-      </li>
-      <li>
-        <a href=""><i class="ph-light ph-barbell icons"></i></a>
-      </li>
-      <li>
-        <a href=""><i class="ph-light ph-person-simple-run icons"></i></a>
-      </li>
-      <li>
-        <a href=""><i class="ph-light ph-users icons"></i></a>
+      <li *ngFor="let menuItem of menuItems">
+        <a [routerLink]="menuItem.path"><i class="ph-light ph-{{menuItem.icon}} icons"></i></a>
       </li>
     </ol>
     <a href="">

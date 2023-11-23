@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FitFusionTreinosModule } from './FItFusionTreinos-module';
+
 
 @Component({
   selector: 'app-FitFusionTreinos',

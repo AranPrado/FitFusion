@@ -1,7 +1,14 @@
 <div class="container">
   <div class="ladoEsquerdo">
     <i class="ph-light ph-sign-out iconLogout" (click)="logout()"></i>
-    <app-NavBar></app-NavBar>
+    <app-NavBar
+    [menuItems]="[
+      { path: '/index', icon: 'house' },
+      { path: '/treinos', icon: 'barbell' },
+      {path: '/exercicios', icon: 'person-simple-run'},
+      {path: '/', icon: 'users'}
+    ]"
+  ></app-NavBar>
   </div>
   <div class="ladoDireito">
     <div class="containerDireito">
@@ -20,11 +27,8 @@
         </div>
       </div>
       <div class="cardsDois">
-        <app-Card emoji="barbell" titulo="Meus Treinos"></app-Card>
-        <app-Card
-          emoji="person-simple-bike"
-          titulo="Meus Exercícios"
-        ></app-Card>
+        <app-Card emoji="barbell" titulo="Meus Treinos" router="/treinos"></app-Card>
+        <app-Card emoji="person-simple-bike" titulo="Meus Exercícios" router="/exercicios"></app-Card>
         <app-Card emoji="users" titulo="Meus Alunos"></app-Card>
       </div>
     </div>

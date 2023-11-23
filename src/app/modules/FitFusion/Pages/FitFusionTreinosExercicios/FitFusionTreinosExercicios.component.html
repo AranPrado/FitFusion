@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="ladoEsquerdo">
+    <app-NavBar
+      [menuItems]="[
+        { path: '/index', icon: 'house' },
+        { path: '/treinos', icon: 'barbell' },
+        {path: '/exercicios', icon: 'person-simple-run'},
+        {path: '/', icon: 'users'}
+      ]"
+    ></app-NavBar>
+  </div>
+  <div class="ladoDireito">
+    <div class="containerDireito">
+      <div class="tituloContainer">
+        <div class="titulo">
+          <p>Meus Treinos</p>
+        </div>
+      </div>
+      <div class="janela">
+        <div class="containerTopo">
+          <div class="tituloContainerJanela">
+            <p class="tituloJanela">TREINO DE PEITO</p>
+          </div>
+          <div class="iconContainer">
+            <button routerLink="/treinos" class="button"><i class="ph-light ph-x icon"></i></button>
+          </div>
+        </div>
+        <div class="cards">
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio></app-CardExercicio>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

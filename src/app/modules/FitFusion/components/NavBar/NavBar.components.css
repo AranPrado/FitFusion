@@ -26,7 +26,7 @@ a {
   }
   
   .perfilIcon {
-    font-size: 2.2em;
+    font-size: 2.5em;
   }
   .perfilIcon:hover {
     color: #e1e0e0;
@@ -78,7 +78,7 @@ a {
   
   .iconPerfil {
     display: flex;
-    margin-top: 90px;
+    margin-top: 240px;
     margin-bottom: 30px;
     justify-content: center;
     width: 100%;
