@@ -11,10 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowSpecificOrigin")]
+    [Authorize]
+    
     public class TreinoController : ControllerBase
     {
         private readonly AppDbContext _contexto;
@@ -45,7 +46,8 @@ namespace FitFusion.Controllers
                                 TreinoID = treino.TreinoID,
                                 NomeTreino = treino.Nome,
                                 DescricaoTreino = treino.Descricao,
-                                Exercicios = treino.Exercicios.ToList()
+                                Exercicios = treino.Exercicios.ToList(),
+                                DataCriacao = treino.DataCriacao
                             }
                     )
                     .ToList();

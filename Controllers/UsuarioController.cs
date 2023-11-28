@@ -13,10 +13,10 @@ namespace FitFusion.Controllers
 
 
 
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowSpecificOrigin")]
+    [Authorize]
 
     public class UsuarioController : ControllerBase
     {
@@ -41,7 +41,7 @@ namespace FitFusion.Controllers
                 return new NotFoundObjectResult("Usuario não encontrado");
             }
 
-            return usuarioID;
+            return Ok(usuarioID);
         }
 
         [HttpGet("TreinosComExercicios/{id}")]

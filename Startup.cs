@@ -132,14 +132,18 @@ namespace FitFusion
 
             // Configuração do CORS
             services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins("http://localhost:4200") // Adicione a origem do seu frontend Angular
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials(); // Permitir credenciais (como cookies)
+                    });
+            });
+
 
 
         }
@@ -157,7 +161,7 @@ namespace FitFusion
             }
 
             app.UseHttpsRedirection();
-            app.UseCors();
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
