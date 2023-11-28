@@ -26,15 +26,8 @@
           </div>
         </div>
         <div class="cards">
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
-          <app-CardExercicio></app-CardExercicio>
+          <app-CardExercicio *ngFor="let treino of treinos; let i = index" [idTreino]="i"></app-CardExercicio>
+          
         </div>
       </div>
     </div>

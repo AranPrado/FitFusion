@@ -1,29 +1,33 @@
-<div class="container">
+
+
+<div class="container" *ngFor="let exercicio of treinos[idTreino]?.exercicios; let j = index">
   <div class="topoContainer">
     <a href=""><i class="ph-light ph-pencil editar icons"></i></a>
-    <p class="titulo">Supino</p>
+    <p class="titulo">{{ exercicio?.nome }}</p>
     <a href=""><i class="ph-light ph-trash deletar icons"></i></a>
   </div>
   <div class="meioContainer">
-    <div class="containerInformacoes">
-      <div class="informacoes">Peso</div>
-      <div class="informacoes">Repetições</div>
-      <div class="informacoes">Series</div>
-    </div>
-    <div class="containerDados">
-      <div class="dados"><p>20</p></div>
-      <div class="dados"><p>10</p></div>
-      <div class="dados"><p>4</p></div>
-    </div>
-  </div>
-  <div class="fundoContainer">
-    <div class="containerInformacoesFundo">
-      <div class="informacoesFundo">Drop</div>
-      <div class="informacoesFundo">Biset</div>
-    </div>
-    <div class="containerDadosFundo">
-      <div class="dadosFundo">Sim</div>
-      <div class="dadosFundo">Não</div>
+    <div>
+      <div class="containerInformacoes">
+        <div class="informacoes">Peso</div>
+        <div class="informacoes">Repetições</div>
+        <div class="informacoes">Séries</div>
+      </div>
+      <div class="containerDados">
+        <div class="dados"><p>{{ exercicio?.peso }}</p></div>
+        <div class="dados"><p>{{ exercicio?.repeticoes }}</p></div>
+        <div class="dados"><p>{{ exercicio?.series }}</p></div>
+      </div>
+      <div class="fundoContainer">
+        <div class="containerInformacoesFundo">
+          <div class="informacoesFundo">Drop</div>
+          <div class="informacoesFundo">Biset</div>
+        </div>
+        <div class="containerDadosFundo">
+          <div class="dadosFundo">{{ exercicio?.drop ? 'Sim' : 'Não' }}</div>
+          <div class="dadosFundo">{{ exercicio?.biset ? 'Sim' : 'Não' }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -41,5 +41,19 @@ export interface TreinoModel{
     nomeTreino: string;
     descricaoTreino: string;
     dataCriacao: Date;
-    
+    exercicios: any;
+    nomeExercicio: string;
+}
+
+export interface ExercicioModel{
+    exercicioID: number;
+    nome:string;
+    peso: number;
+    repeticoes:number;
+    series:number;
+    treinoId: number;
+    descricao:string;
+    dataCriacao:Date;
+    drop: boolean;
+    biset: boolean;
 }

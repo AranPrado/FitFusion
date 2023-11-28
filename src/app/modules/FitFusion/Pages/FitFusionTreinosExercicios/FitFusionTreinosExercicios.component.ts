@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FitFusionExerciciosModule } from './FitFusionTreinosExercicios-module';
+import { TreinoModel } from '../../models/Models.model';
+import { FitFusionServicesService } from '../../services/FitFusionServices.service';
 
 
 @Component({
@@ -8,10 +10,25 @@ import { FitFusionExerciciosModule } from './FitFusionTreinosExercicios-module';
   styleUrls: ['./FitFusionTreinosExercicios.component.css']
 })
 export class FitFusionTreinosExerciciosComponent implements OnInit {
+  
+  constructor(private fitFusionService: FitFusionServicesService) { }
 
-  constructor() { }
-
+  treinos: TreinoModel[] = [];
   ngOnInit() {
+    const userId = localStorage.getItem('userId');
+
+    if (userId) {
+      this.fitFusionService.treinosInformacoes().subscribe(
+        (treinos: TreinoModel[]) => {
+          this.treinos = treinos;
+          
+        },
+        (error) => {
+          console.error('Erro ao obter informações de treinos:', error);
+        }
+      );
+    }
+
   }
 
 }
