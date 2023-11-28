@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginModel, PerfilModel, RegistroModel } from '../models/Models.model';
+import { LoginModel, PerfilModel, RegistroModel, TreinoModel } from '../models/Models.model';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, retry } from 'rxjs';
 
@@ -41,8 +41,17 @@ informacoesUsuario(id: any): Observable<PerfilModel> {
   const headers = this.getAuthorizedHeaders();
 
   // Faça a chamada HTTP
-  return this.http.get<PerfilModel>(url, { headers: headers });
+  return this.http.get<PerfilModel>(url, { headers: headers, withCredentials: true });
 }
 
+treinosInformacoes(): Observable<TreinoModel[]>{
+  const url = `${this.apiUrl}/api/Treino`;
+
+    // Obtenha os cabeçalhos autorizados
+    const headers = this.getAuthorizedHeaders();
+
+    // Faça a chamada HTTP com os cabeçalhos autorizados
+    return this.http.get<TreinoModel[]>(url, { headers: headers, withCredentials: true });
+}
 
 }

@@ -34,3 +34,12 @@ export interface PerfilModel{
     dataCriacao: Date;
     roleNome: string | null; 
 }
+
+export interface TreinoModel{
+ 
+    treinoId: number;
+    nomeTreino: string;
+    descricaoTreino: string;
+    dataCriacao: Date;
+    
+}

@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TreinoModel } from '../../models/Models.model';
+import { FitFusionServicesService } from '../../services/FitFusionServices.service';
 
 @Component({
   selector: 'app-CardTreinos',
@@ -8,10 +10,25 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CardTreinosComponent implements OnInit {
 
   @Input() router: string = '';
+  @Input() idTreino: number = 0;
 
-  constructor() { }
+  constructor(private fitFusionService: FitFusionServicesService) { }
 
+  treinos: TreinoModel[] = [];
   ngOnInit() {
-  }
+    const userId = localStorage.getItem('userId');
 
+    if (userId) {
+      this.fitFusionService.treinosInformacoes().subscribe(
+        (treinos: TreinoModel[]) => {
+          this.treinos = treinos;
+          console.log(this.treinos);
+        },
+        (error) => {
+          console.error('Erro ao obter informações de treinos:', error);
+        }
+      );
+    }
+
+  }
 }
