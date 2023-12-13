@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitFusion.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    
+
     public class TreinoController : ControllerBase
     {
         private readonly AppDbContext _contexto;
@@ -46,7 +46,6 @@ namespace FitFusion.Controllers
                                 TreinoID = treino.TreinoID,
                                 NomeTreino = treino.Nome,
                                 DescricaoTreino = treino.Descricao,
-                                Exercicios = treino.Exercicios.ToList(),
                                 DataCriacao = treino.DataCriacao
                             }
                     )
@@ -105,6 +104,32 @@ namespace FitFusion.Controllers
                 return treinoModel;
             }
             catch (System.Exception)
+            {
+                // Trate exceções, se necessário
+                throw;
+            }
+        }
+
+        [HttpGet("{id}/exercicios")]
+        [Authorize(Roles = Role.Treinador)]
+        public async Task<ActionResult<IEnumerable<ExerciciosModel>>> ObterExerciciosDoTreino(int id)
+        {
+            try
+            {
+                var treino = await _contexto.Treinos
+                    .Include(t => t.Exercicios)
+                    .FirstOrDefaultAsync(t => t.TreinoID == id);
+
+                if (treino == null)
+                {
+                    return NotFound("Treino não encontrado");
+                }
+
+                var exerciciosDoTreino = treino.Exercicios.ToList();
+
+                return exerciciosDoTreino;
+            }
+            catch (Exception)
             {
                 // Trate exceções, se necessário
                 throw;

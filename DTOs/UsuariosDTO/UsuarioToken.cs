@@ -13,5 +13,7 @@ namespace FitFusion.DTOs
         public string AspNetUserID { get; set; }
 
         
+
+        
     }
 }

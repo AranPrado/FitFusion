@@ -148,7 +148,7 @@ namespace FitFusion.Controllers
                         Token = token.Token,
                         Message = token.Message,
                         AspNetUserID = user.Id,
-                      
+                        
                     };
 
                     return Ok(usuarioToken);

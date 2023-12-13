@@ -16,7 +16,7 @@ namespace FitFusion.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    
 
     public class UsuarioController : ControllerBase
     {
