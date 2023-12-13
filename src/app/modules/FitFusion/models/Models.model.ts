@@ -32,7 +32,7 @@ export interface PerfilModel{
     idade:number | null;
     altura:number | null;
     dataCriacao: Date;
-    roleNome: string | null; 
+    roleNome: string | null | undefined; 
 }
 
 export interface TreinoModel{

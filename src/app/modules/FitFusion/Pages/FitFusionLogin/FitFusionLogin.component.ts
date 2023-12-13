@@ -32,6 +32,7 @@ export class FitFusionLoginComponent implements OnInit {
     senha: ''
   };
   userId: string | null | undefined;
+  
 
   constructor(private fitFusionService: FitFusionServicesService,private router: Router) {
     
@@ -44,7 +45,7 @@ export class FitFusionLoginComponent implements OnInit {
 
       localStorage.setItem('token', res.token);
       localStorage.setItem('userId', res.aspNetUserID);
-
+      
       
       
       this.router.navigate(['/index']);

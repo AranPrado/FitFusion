@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginModel, PerfilModel, RegistroModel, TreinoModel } from '../models/Models.model';
+import { ExercicioModel, LoginModel, PerfilModel, RegistroModel, TreinoModel } from '../models/Models.model';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, retry } from 'rxjs';
 
@@ -28,7 +28,7 @@ registro(registroModel: RegistroModel){
 private getAuthorizedHeaders(): HttpHeaders {
   const token = localStorage.getItem('token');
   return new HttpHeaders({
-    'Authorization': `Bearer ${token}`
+    'Authorization': `${token}`
   });
 }
 
@@ -53,5 +53,14 @@ treinosInformacoes(): Observable<TreinoModel[]>{
     // Faça a chamada HTTP com os cabeçalhos autorizados
     return this.http.get<TreinoModel[]>(url, { headers: headers, withCredentials: true });
 }
+
+exerciciosDoTreino(treinoId: number): Observable<ExercicioModel[]> {
+  const url = `${this.apiUrl}/api/Treino/${treinoId}/exercicios`;
+
+  const headers = this.getAuthorizedHeaders();
+
+  return this.http.get<ExercicioModel[]>(url, { headers: headers, withCredentials: true });
+}
+
 
 }

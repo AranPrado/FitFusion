@@ -15,6 +15,7 @@ export class CardTreinosComponent implements OnInit {
   constructor(private fitFusionService: FitFusionServicesService) { }
 
   treinos: TreinoModel[] = [];
+  res:any;
   ngOnInit() {
     const userId = localStorage.getItem('userId');
 
@@ -22,6 +23,7 @@ export class CardTreinosComponent implements OnInit {
       this.fitFusionService.treinosInformacoes().subscribe(
         (treinos: TreinoModel[]) => {
           this.treinos = treinos;
+          
           console.log(this.treinos);
         },
         (error) => {
