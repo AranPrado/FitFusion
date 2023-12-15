@@ -6,9 +6,10 @@ import { FitFusionTreinosComponent } from './FitFusionTreinos.component';
 import { CardTreinosComponent } from '../../components/CardTreinos/CardTreinos.component';
 import { NavBarModule } from '../../components/NavBar/NavBar-module';
 import { CommonModule } from '@angular/common';
+import { CardCriarTreinoComponent } from '../../components/CardCriarTreino/CardCriarTreino.component';
 
 @NgModule({
-  declarations: [FitFusionTreinosComponent, CardTreinosComponent],
+  declarations: [FitFusionTreinosComponent, CardTreinosComponent, CardCriarTreinoComponent],
   imports: [RouterModule, NavBarModule, CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [FitFusionServicesService]

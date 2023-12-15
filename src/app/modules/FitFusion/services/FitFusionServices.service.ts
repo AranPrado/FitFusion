@@ -54,12 +54,12 @@ treinosInformacoes(): Observable<TreinoModel[]>{
     return this.http.get<TreinoModel[]>(url, { headers: headers, withCredentials: true });
 }
 
-exerciciosDoTreino(treinoId: number): Observable<ExercicioModel[]> {
-  const url = `${this.apiUrl}/api/Treino/${treinoId}/exercicios`;
+exercicioTreino(idTreino: any): Observable<ExercicioModel[]>{
+  const url = `${this.apiUrl}/api/treino/${idTreino}/exercicios`;
 
   const headers = this.getAuthorizedHeaders();
 
-  return this.http.get<ExercicioModel[]>(url, { headers: headers, withCredentials: true });
+  return this.http.get<ExercicioModel[]>(url,{headers: headers, withCredentials: true});
 }
 
 

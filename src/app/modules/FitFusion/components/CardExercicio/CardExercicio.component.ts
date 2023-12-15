@@ -9,21 +9,27 @@ import { FitFusionServicesService } from '../../services/FitFusionServices.servi
 })
 export class CardExercicioComponent implements OnInit {
 
+  @Input() treino: TreinoModel | undefined;
 
   constructor(private fitFusionService: FitFusionServicesService) { }
-
 
   exercicios: ExercicioModel[] = [];
 
   ngOnInit() {
-    
-    
+    this.exercicio();
   }
 
-  // private carregarExercicios(){
-  //   this.fitFusionService.exerciciosDoTreino().subscribe((exercicios:ExercicioModel[]) => {
-
-  //   })
-  // }
-
+  exercicio() {
+    if (this.treino) {
+      this.fitFusionService.exercicioTreino(this.treino.treinoId).subscribe(
+        (exercicios: ExercicioModel[]) => {
+          this.exercicios = exercicios;
+          console.log(exercicios);
+        },
+        (error) => {
+          console.error('Erro ao obter exercícios do treino:', error);
+        }
+      );
+    }
+  }
 }

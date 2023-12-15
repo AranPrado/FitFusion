@@ -18,13 +18,18 @@
         </div>
         <div class="criarContainer">
           <button class="buttonCriar">Vincular treino</button>
-          <button class="buttonCriar">Criar treino</button>
+          <button class="buttonCriar" (click)="toggleCriarTreino()">Criar treino</button>
         </div>
       </div>
-      <div class="cards">
-        <app-CardTreinos  *ngFor="let treino of treinos, let i = index" [idTreino]="i" router="/treinos/exercicios"></app-CardTreinos>
-        
+      <div class="cards" *ngIf="cardsVisiveis">
+        <ng-container *ngIf="!criarTreinoVisivel">
+          <app-CardTreinos *ngFor="let treino of treinos; let i = index" [idTreino]="i" router="/treinos/exercicios"></app-CardTreinos>
+        </ng-container>
+        <ng-container *ngIf="criarTreinoVisivel">
+          <app-CardCriarTreino (fecharCardEvent)="fecharCard()"></app-CardCriarTreino>
+        </ng-container>
       </div>
+      
     </div>
   </div>
 </div>

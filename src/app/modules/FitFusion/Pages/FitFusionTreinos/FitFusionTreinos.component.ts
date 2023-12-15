@@ -14,6 +14,8 @@ export class FitFusionTreinosComponent implements OnInit {
   constructor(private fitFusionService: FitFusionServicesService) { }
 
   treinos: TreinoModel[] = [];
+  criarTreinoVisivel: boolean = false;
+  cardsVisiveis: boolean = true;
   ngOnInit() {
     const userId = localStorage.getItem('userId');
 
@@ -31,4 +33,13 @@ export class FitFusionTreinosComponent implements OnInit {
 
   }
 
+  
+  toggleCriarTreino() {
+    this.criarTreinoVisivel = !this.criarTreinoVisivel;
+    
+  }
+  
+  fecharCard() {
+    this.criarTreinoVisivel = false;
+  }
 }

@@ -1,0 +1,109 @@
+.container {
+    background-color:#03C988;
+    width: 370px;
+    height: 426px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.superior{
+    display: flex;
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid #000;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo{
+    font-size: 24px;
+    font-weight: 100;
+    width: 85%;
+    text-align: center;
+    padding-left: 15px;
+}
+
+.button{
+    background-color: transparent;
+    border: 0;
+}
+
+.icon{
+    font-size: 1.8em;
+    cursor: pointer;
+}
+
+.meio{
+    margin-top: 25px;
+    margin-left: 15px;
+}
+
+.nome{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.inputContainer1{
+    margin-bottom: 15px;
+}
+
+.input{
+    width: 95%;
+    height: 35px;
+    border-radius: 5px;
+    border: 0px;
+}
+.input::placeholder{
+    padding-left: 10px;
+    
+}
+
+.textArea::placeholder{
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.textArea{
+    max-width: 95%;
+    max-height: 150px;
+    width: 95%;
+    height: 150px;
+    border: 0;
+    border-radius: 5px;
+}
+
+.footer{
+    display: flex;
+    width: 100%;
+    justify-content: end;
+    margin-top: 20px;
+    color: #fff;
+    padding-left: 20px;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.date{
+    margin-left: 5px;
+}
+
+.dates{
+    display: flex;
+}
+
+.criarBotao{
+    width: 140px;
+    height: 40px;
+    border: 0;
+    border-radius: 5px;
+    background-color: #0B666A;
+    color: #fff;
+    cursor: pointer;
+    font-size: 15px;
+}
